@@ -233,7 +233,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         synchronized(this){
             chooseCamera();
             if (!openCamera()) {
-                mCallback.onMountError();
+                mCallback.onMountError("Could not open camera");
                 // returning false will result in invoking this method again
                 return true;
             }
@@ -326,6 +326,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             }
         } catch (Exception e) {
             Log.e("CAMERA_1::", "setUpPreview failed", e);
+            mCallback.onMountError("Setup preview failed " + e.getMessage());
         }
     }
 
@@ -342,6 +343,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             catch(Exception e){
                 mIsPreviewActive = false;
                 Log.e("CAMERA_1::", "startCameraPreview failed", e);
+                mCallback.onMountError("Start camera preview failed " + e.getMessage());
             }
         }
     }
@@ -485,6 +487,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                 }
                 catch(RuntimeException e ) {
                     Log.e("CAMERA_1::", "setParameters failed", e);
+                    mCallback.onMountError("Set parameters failed " + e.getMessage());
                 }
 
             }
@@ -928,6 +931,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                     startCameraPreview();
                 } catch (IOException e) {
                     Log.e("CAMERA_1::", "setPreviewTexture failed", e);
+                    mCallback.onMountError("Set preview texture failed " + e.getMessage());
                 }
             }
         });
@@ -1029,6 +1033,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             mCallback.onCameraOpened();
             return true;
         } catch (RuntimeException e) {
+            Log.e("Camera1::", "Camera error: " + e.getMessage());
             return false;
         }
     }

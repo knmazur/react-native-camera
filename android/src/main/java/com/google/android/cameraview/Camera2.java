@@ -305,7 +305,7 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
     boolean start() {
         if (!chooseCameraIdByFacing()) {
             mAspectRatio = mInitialRatio;
-            mCallback.onMountError();
+            mCallback.onMountError("");
             return false;
         }
         collectCameraInfo();
@@ -945,7 +945,7 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
                     mScanImageReader.getSurface()), mSessionCallback, null);
         } catch (CameraAccessException e) {
             Log.e(TAG, "Failed to start capture session", e);
-            mCallback.onMountError();
+            mCallback.onMountError(e.getMessage());
         }
     }
 

@@ -99,8 +99,8 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
       }
 
       @Override
-      public void onMountError(CameraView cameraView) {
-        RNCameraViewHelper.emitMountErrorEvent(cameraView, "Camera view threw an error - component could not be rendered.");
+      public void onMountError(CameraView cameraView, String error) {
+        RNCameraViewHelper.emitMountErrorEvent(cameraView, "Camera view threw an error - " + error);
       }
 
       @Override
@@ -595,16 +595,10 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
     mMultiFormatReader = null;
     mThemedReactContext.removeLifecycleEventListener(this);
 
-    // camera release can be quite expensive. Run in on bg handler
-    // and cleanup last once everything has finished
-    mBgHandler.post(new Runnable() {
-        @Override
-        public void run() {
-          stop();
-          cleanup();
-        }
-      });
+    stop();
+    cleanup();
   }
+
   private void onZoom(float scale){
     float currentZoom=getZoom();
     float nextZoom=currentZoom+(scale-1.0f);
@@ -614,7 +608,6 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
     }else{
       setZoom(Math.max(nextZoom,0.0f));
     }
-
   }
 
   private boolean hasCameraPermissions() {
