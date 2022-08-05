@@ -11,19 +11,19 @@ import java.util.Map;
 
 public class CameraViewManager extends ViewGroupManager<RNCameraView> {
   public enum Events {
-    EVENT_CAMERA_READY("onCameraReady"),
-    EVENT_ON_MOUNT_ERROR("onMountError"),
-    EVENT_ON_BAR_CODE_READ("onBarCodeRead"),
-    EVENT_ON_FACES_DETECTED("onFacesDetected"),
-    EVENT_ON_BARCODES_DETECTED("onGoogleVisionBarcodesDetected"),
-    EVENT_ON_FACE_DETECTION_ERROR("onFaceDetectionError"),
-    EVENT_ON_BARCODE_DETECTION_ERROR("onGoogleVisionBarcodeDetectionError"),
-    EVENT_ON_TEXT_RECOGNIZED("onTextRecognized"),
-    EVENT_ON_PICTURE_TAKEN("onPictureTaken"),
-    EVENT_ON_PICTURE_SAVED("onPictureSaved"),
-    EVENT_ON_RECORDING_START("onRecordingStart"),
-    EVENT_ON_RECORDING_END("onRecordingEnd"),
-    EVENT_ON_TOUCH("onTouch");
+    EVENT_CAMERA_READY("topOnCameraReady"),
+    EVENT_ON_MOUNT_ERROR("topOnMountError"),
+    EVENT_ON_BAR_CODE_READ("topOnBarCodeRead"),
+    EVENT_ON_FACES_DETECTED("topOnFacesDetected"),
+    EVENT_ON_BARCODES_DETECTED("topOnGoogleVisionBarcodesDetected"),
+    EVENT_ON_FACE_DETECTION_ERROR("topOnFaceDetectionError"),
+    EVENT_ON_BARCODE_DETECTION_ERROR("topOnGoogleVisionBarcodeDetectionError"),
+    EVENT_ON_TEXT_RECOGNIZED("topOnTextRecognized"),
+    EVENT_ON_PICTURE_TAKEN("topOnPictureTaken"),
+    EVENT_ON_PICTURE_SAVED("topOnPictureSaved"),
+    EVENT_ON_RECORDING_START("topOnRecordingStart"),
+    EVENT_ON_RECORDING_END("topOnRecordingEnd"),
+    EVENT_ON_TOUCH("topOnTouch");
 
 
     private final String mName;
