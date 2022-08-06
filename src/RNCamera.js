@@ -313,8 +313,13 @@ const RecordAudioPermissionStatusEnum: {
   NOT_AUTHORIZED: 'NOT_AUTHORIZED',
 };
 
-const CameraManager: Object = NativeModules.RNCameraManager ||
-  NativeModules.RNCameraModule || {
+const isTurboModuleEnabled = global.__turboModuleProxy != null;
+
+const RNCameraManager = isTurboModuleEnabled ? require("./NativeRNCamera").default : NativeModules.RNCameraModule
+
+const constants = isTurboModuleEnabled ? RNCameraManager.getTurboConstants() : RNCameraManager
+
+const CameraManager: Object =  constants || {
     stubbed: true,
     Type: {
       back: 1,
@@ -916,7 +921,9 @@ export function hasTorch() {
   return CameraManager.hasTorch();
 }
 
-const RNCamera = requireNativeComponent('RNCamera', Camera, {
+const isFabricEnabled = global.nativeFabricUIManager != null
+
+const RNCamera = !isFabricEnabled ? requireNativeComponent('RNCamera', Camera, {
   nativeOnly: {
     accessibilityComponentType: true,
     accessibilityLabel: true,
@@ -941,4 +948,4 @@ const RNCamera = requireNativeComponent('RNCamera', Camera, {
     renderToHardwareTextureAndroid: true,
     testID: true,
   },
-});
+}) : require("./RNCameraNativeComponent").default;

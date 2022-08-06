@@ -29,46 +29,14 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.SortedSet;
 
+import android.util.Log;
+
 
 public class CameraModuleImpl  {
     public static final String NAME = "RNCameraModule";
 
-    static final int VIDEO_2160P = 0;
-    static final int VIDEO_1080P = 1;
-    static final int VIDEO_720P = 2;
-    static final int VIDEO_480P = 3;
-    static final int VIDEO_4x3 = 4;
-
-    static final int GOOGLE_VISION_BARCODE_MODE_NORMAL = 0;
-    static final int GOOGLE_VISION_BARCODE_MODE_ALTERNATE = 1;
-    static final int GOOGLE_VISION_BARCODE_MODE_INVERTED = 2;
-
-    public static final Map<String, Object> VALID_BARCODE_TYPES =
-            Collections.unmodifiableMap(new HashMap<String, Object>() {
-                {
-                    put("aztec", BarcodeFormat.AZTEC.toString());
-                    put("ean13", BarcodeFormat.EAN_13.toString());
-                    put("ean8", BarcodeFormat.EAN_8.toString());
-                    put("qr", BarcodeFormat.QR_CODE.toString());
-                    put("pdf417", BarcodeFormat.PDF_417.toString());
-                    put("upc_e", BarcodeFormat.UPC_E.toString());
-                    put("datamatrix", BarcodeFormat.DATA_MATRIX.toString());
-                    put("code39", BarcodeFormat.CODE_39.toString());
-                    put("code93", BarcodeFormat.CODE_93.toString());
-                    put("interleaved2of5", BarcodeFormat.ITF.toString());
-                    put("codabar", BarcodeFormat.CODABAR.toString());
-                    put("code128", BarcodeFormat.CODE_128.toString());
-                    put("maxicode", BarcodeFormat.MAXICODE.toString());
-                    put("rss14", BarcodeFormat.RSS_14.toString());
-                    put("rssexpanded", BarcodeFormat.RSS_EXPANDED.toString());
-                    put("upc_a", BarcodeFormat.UPC_A.toString());
-                    put("upc_ean", BarcodeFormat.UPC_EAN_EXTENSION.toString());
-                }
-            });
-
-
-    @Nullable
     public static Map<String, Object> getConstants() {
+        Log.d("INFO", "getConstants()");
         return Collections.unmodifiableMap(new HashMap<String, Object>() {
             {
                 put("Type", getTypeConstants());
@@ -173,11 +141,11 @@ public class CameraModuleImpl  {
             private Map<String, Object> getVideoQualityConstants() {
                 return Collections.unmodifiableMap(new HashMap<String, Object>() {
                     {
-                        put("2160p", VIDEO_2160P);
-                        put("1080p", VIDEO_1080P);
-                        put("720p", VIDEO_720P);
-                        put("480p", VIDEO_480P);
-                        put("4:3", VIDEO_4x3);
+                        put("2160p", Constants.VIDEO_2160P);
+                        put("1080p", Constants.VIDEO_1080P);
+                        put("720p", Constants.VIDEO_720P);
+                        put("480p", Constants.VIDEO_480P);
+                        put("4:3", Constants.VIDEO_4x3);
                     }
                 });
             }
@@ -185,15 +153,15 @@ public class CameraModuleImpl  {
             private Map<String, Object> getGoogleVisionBarcodeModeConstants() {
                 return Collections.unmodifiableMap(new HashMap<String, Object>() {
                     {
-                        put("NORMAL", GOOGLE_VISION_BARCODE_MODE_NORMAL);
-                        put("ALTERNATE", GOOGLE_VISION_BARCODE_MODE_ALTERNATE);
-                        put("INVERTED", GOOGLE_VISION_BARCODE_MODE_INVERTED);
+                        put("NORMAL", Constants.GOOGLE_VISION_BARCODE_MODE_NORMAL);
+                        put("ALTERNATE", Constants.GOOGLE_VISION_BARCODE_MODE_ALTERNATE);
+                        put("INVERTED", Constants.GOOGLE_VISION_BARCODE_MODE_INVERTED);
                     }
                 });
             }
 
             private Map<String, Object> getBarCodeConstants() {
-                return VALID_BARCODE_TYPES;
+                return Constants.VALID_BARCODE_TYPES;
             }
         });
     }

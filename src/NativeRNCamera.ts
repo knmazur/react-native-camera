@@ -4,7 +4,8 @@ import { TurboModuleRegistry } from 'react-native';
 import {Int32} from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface Spec extends TurboModule {
-    getConstants: () => {};
+    readonly getConstants: () => {};
+    getTurboConstants: () => Readonly<{}>;
     pausePreview(viewTag: Int32): void;
     resumePreview(viewTag: Int32): void;
     takePicture(options: Readonly<{}>,viewId: Int32): Promise<Readonly<{}>>;
@@ -18,7 +19,7 @@ export interface Spec extends TurboModule {
     checkIfRecordAudioPermissionsAreDefined(): Promise<boolean>;
     getSupportedPreviewFpsRange(viewTag: Int32): Promise<Readonly<{}>>;
     hasTorch(): Promise<boolean>;
-    checkIfVideoIsValid(path: string): Promise<boolean>; 
+    checkIfVideoIsValid(path: string): Promise<boolean>;
 }
 
 export default (TurboModuleRegistry.get<Spec>('RNCameraModule')) as Spec;
