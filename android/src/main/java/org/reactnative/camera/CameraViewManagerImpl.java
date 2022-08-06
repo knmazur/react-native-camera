@@ -18,8 +18,8 @@ public class CameraViewManagerImpl {
     @Nullable
     public static Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
-        for (CameraViewManager.Events event : CameraViewManager.Events.values()) {
-            builder.put(event.toString(), MapBuilder.of("registrationName", event.toString()));
+        for (Events event : Events.values()) {
+            builder.put("top" + event.toString(), MapBuilder.of("registrationName", event.toString()));
         }
         return builder.build();
     }

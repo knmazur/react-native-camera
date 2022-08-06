@@ -10,34 +10,6 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import java.util.Map;
 
 public class CameraViewManager extends ViewGroupManager<RNCameraView> {
-  public enum Events {
-    EVENT_CAMERA_READY("topOnCameraReady"),
-    EVENT_ON_MOUNT_ERROR("topOnMountError"),
-    EVENT_ON_BAR_CODE_READ("topOnBarCodeRead"),
-    EVENT_ON_FACES_DETECTED("topOnFacesDetected"),
-    EVENT_ON_BARCODES_DETECTED("topOnGoogleVisionBarcodesDetected"),
-    EVENT_ON_FACE_DETECTION_ERROR("topOnFaceDetectionError"),
-    EVENT_ON_BARCODE_DETECTION_ERROR("topOnGoogleVisionBarcodeDetectionError"),
-    EVENT_ON_TEXT_RECOGNIZED("topOnTextRecognized"),
-    EVENT_ON_PICTURE_TAKEN("topOnPictureTaken"),
-    EVENT_ON_PICTURE_SAVED("topOnPictureSaved"),
-    EVENT_ON_RECORDING_START("topOnRecordingStart"),
-    EVENT_ON_RECORDING_END("topOnRecordingEnd"),
-    EVENT_ON_TOUCH("topOnTouch");
-
-
-    private final String mName;
-
-    Events(final String name) {
-      mName = name;
-    }
-
-    @Override
-    public String toString() {
-      return mName;
-    }
-  }
-
   @Override
   public void onDropViewInstance(RNCameraView view) {
     view.onHostDestroy();

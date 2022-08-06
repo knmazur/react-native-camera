@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
 
 
 public class TouchEvent extends Event<TouchEvent> {
@@ -45,7 +46,7 @@ public class TouchEvent extends Event<TouchEvent> {
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_TOUCH.toString();
+    return "top" + Events.EVENT_ON_TOUCH.toString();
   }
 
   @Override

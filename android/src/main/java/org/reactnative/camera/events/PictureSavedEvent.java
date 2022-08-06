@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
 
 public class PictureSavedEvent extends Event<PictureSavedEvent> {
     private static final Pools.SynchronizedPool<PictureSavedEvent> EVENTS_POOL = new Pools.SynchronizedPool<>(5);
@@ -36,7 +37,7 @@ public class PictureSavedEvent extends Event<PictureSavedEvent> {
     
     @Override
     public String getEventName() {
-        return CameraViewManager.Events.EVENT_ON_PICTURE_SAVED.toString();
+        return "top" + Events.EVENT_ON_PICTURE_SAVED.toString();
     }
     
     @Override

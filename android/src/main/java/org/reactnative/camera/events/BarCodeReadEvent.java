@@ -5,6 +5,8 @@ import android.util.Base64;
 import androidx.core.util.Pools;
 
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
@@ -58,7 +60,7 @@ public class BarCodeReadEvent extends Event<BarCodeReadEvent> {
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_BAR_CODE_READ.toString();
+    return "top" + Events.EVENT_ON_BAR_CODE_READ.toString();
   }
 
   @Override

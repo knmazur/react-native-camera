@@ -3,6 +3,8 @@ package org.reactnative.camera.events;
 import androidx.core.util.Pools;
 
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
@@ -28,7 +30,7 @@ public class RecordingEndEvent extends Event<RecordingEndEvent> {
 
     @Override
     public String getEventName() {
-        return CameraViewManager.Events.EVENT_ON_RECORDING_END.toString();
+        return "top" + Events.EVENT_ON_RECORDING_END.toString();
     }
 
     @Override

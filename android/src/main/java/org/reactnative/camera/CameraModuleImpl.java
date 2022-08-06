@@ -5,34 +5,39 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
+import android.util.Log;
 
-
-import com.facebook.react.bridge.*;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.GuardedAsyncTask;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.cameraview.AspectRatio;
-import com.google.zxing.BarcodeFormat;
+import com.google.android.cameraview.Size;
+
 import org.reactnative.barcodedetector.BarcodeFormatUtils;
 import org.reactnative.camera.utils.ScopedContext;
 import org.reactnative.facedetector.RNFaceDetector;
-import com.google.android.cameraview.Size;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Properties;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 
-import android.util.Log;
 
-
-public class CameraModuleImpl  {
+public class CameraModuleImpl {
     public static final String NAME = "RNCameraModule";
 
     public static Map<String, Object> getConstants() {
@@ -167,14 +172,13 @@ public class CameraModuleImpl  {
     }
 
     public static void pausePreview(final int viewTag, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     if (cameraView.isCameraOpened()) {
                         cameraView.pausePreview();
                     }
@@ -186,14 +190,13 @@ public class CameraModuleImpl  {
     }
 
     public static void resumePreview(final int viewTag, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     if (cameraView.isCameraOpened()) {
                         cameraView.resumePreview();
                     }
@@ -206,19 +209,18 @@ public class CameraModuleImpl  {
 
     public static void takePicture(final ReadableMap options, final int viewTag, final Promise promise, final ReactApplicationContext context, final ScopedContext scopedContext) {
         final File cacheDirectory = scopedContext.getCacheDirectory();
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                RNCameraView cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+            public void run() {
                 try {
+                    RNCameraView cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
+
                     if (cameraView.isCameraOpened()) {
                         cameraView.takePicture(options, promise, cacheDirectory);
                     } else {
                         promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     promise.reject("E_TAKE_PICTURE_FAILED", e.getMessage());
                 }
             }
@@ -227,15 +229,14 @@ public class CameraModuleImpl  {
 
     public static void record(final ReadableMap options, final int viewTag, final Promise promise, final ReactApplicationContext context, final ScopedContext scopedContext) {
         final File cacheDirectory = scopedContext.getCacheDirectory();
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
 
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     if (cameraView.isCameraOpened()) {
                         cameraView.record(options, promise, cacheDirectory);
                     } else {
@@ -249,14 +250,13 @@ public class CameraModuleImpl  {
     }
 
     public static void stopRecording(final int viewTag, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     if (cameraView.isCameraOpened()) {
                         cameraView.stopRecording();
                     }
@@ -268,14 +268,13 @@ public class CameraModuleImpl  {
     }
 
     public static void pauseRecording(final int viewTag, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     if (cameraView.isCameraOpened()) {
                         cameraView.pauseRecording();
                     }
@@ -287,14 +286,13 @@ public class CameraModuleImpl  {
     }
 
     public static void resumeRecording(final int viewTag, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     if (cameraView.isCameraOpened()) {
                         cameraView.resumeRecording();
                     }
@@ -306,13 +304,13 @@ public class CameraModuleImpl  {
     }
 
     public static void getSupportedRatios(final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
+
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     WritableArray result = Arguments.createArray();
                     if (cameraView.isCameraOpened()) {
                         Set<AspectRatio> ratios = cameraView.getSupportedAspectRatios();
@@ -331,13 +329,13 @@ public class CameraModuleImpl  {
     }
 
     public static void getCameraIds(final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
+
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     WritableArray result = Arguments.createArray();
                     List<Properties> ids = cameraView.getCameraIds();
                     for (Properties p : ids) {
@@ -356,14 +354,13 @@ public class CameraModuleImpl  {
     }
 
     public static void getAvailablePictureSizes(final String ratio, final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     WritableArray result = Arguments.createArray();
                     if (cameraView.isCameraOpened()) {
                         SortedSet<Size> sizes = cameraView.getAvailablePictureSizes(AspectRatio.parse(ratio));
@@ -375,6 +372,7 @@ public class CameraModuleImpl  {
                         promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     promise.reject("E_CAMERA_BAD_VIEWTAG", "getAvailablePictureSizesAsync: Expected a Camera component");
                 }
             }
@@ -399,14 +397,13 @@ public class CameraModuleImpl  {
     }
 
     public static void getSupportedPreviewFpsRange(final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
+        context.runOnUiQueueThread(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+            public void run() {
                 final RNCameraView cameraView;
 
                 try {
-                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
                     WritableArray result = Arguments.createArray();
                     ArrayList<int[]> ranges = cameraView.getSupportedPreviewFpsRange();
                     for (int[] range : ranges) {
@@ -418,6 +415,7 @@ public class CameraModuleImpl  {
                     promise.resolve(result);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    promise.reject("E_CAMERA_BAD_VIEWTAG", "getSupportedPreviewFpsRangeAsync: Expected a Camera component");
                 }
             }
         });
@@ -437,11 +435,10 @@ public class CameraModuleImpl  {
             protected void doInBackgroundGuarded(Void... params) {
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
 
-                try{
+                try {
                     try {
                         retriever.setDataSource(path);
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
 
                         // if we failed to load the source, also return true
@@ -460,13 +457,12 @@ public class CameraModuleImpl  {
                     //promise.resolve(hasVideo == null || "yes".equals(hasVideo));
                     promise.resolve(hasVideo != null && ("yes".equals(hasVideo) || "true".equals(hasVideo) ||
                             mimeType != null && mimeType.contains("video")));
-                }
-                finally{
+                } finally {
                     // this many fail or may not be available in API < 29
-                    try{
+                    try {
                         retriever.release();
+                    } catch (Throwable e) {
                     }
-                    catch(Throwable e){}
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

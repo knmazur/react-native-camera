@@ -13,7 +13,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-
 public class CameraModule extends NativeRNCameraSpec {
     private ScopedContext mScopedContext;
 
@@ -38,72 +37,72 @@ public class CameraModule extends NativeRNCameraSpec {
 
     @Override
     public void pausePreview(final double viewTag) {
-        //CameraModuleImpl.pausePreview(viewTag, getReactApplicationContext());
+        CameraModuleImpl.pausePreview((int)viewTag, getReactApplicationContext());
     }
 
     @Override
     public void resumePreview(final double viewTag) {
-        //CameraModuleImpl.resumePreview(viewTag, getReactApplicationContext());
+        CameraModuleImpl.resumePreview((int)viewTag, getReactApplicationContext());
     }
 
     @Override
     public void takePicture(final ReadableMap options, final double viewTag, final Promise promise) {
-        //CameraModuleImpl.takePicture(options, viewTag, promise, getReactApplicationContext(), mScopedContext);
+        CameraModuleImpl.takePicture(options, (int)viewTag, promise, getReactApplicationContext(), mScopedContext);
     }
 
     @Override
     public void record(final ReadableMap options, final double viewTag, final Promise promise) {
-        //CameraModuleImpl.record(options, viewTag, promise, getReactApplicationContext(), mScopedContext);
+        CameraModuleImpl.record(options, (int)viewTag, promise, getReactApplicationContext(), mScopedContext);
     }
 
     @Override
     public void stopRecording(final double viewTag) {
-        //CameraModuleImpl.stopRecording(viewTag, getReactApplicationContext());
+        CameraModuleImpl.stopRecording((int)viewTag, getReactApplicationContext());
     }
 
     @Override
     public void pauseRecording(final double viewTag) {
-     //   CameraModuleImpl.pauseRecording(viewTag, getReactApplicationContext());
+        CameraModuleImpl.pauseRecording((int)viewTag, getReactApplicationContext());
     }
 
     @Override
     public void resumeRecording(final double viewTag) {
-       // CameraModuleImpl.resumeRecording(viewTag, getReactApplicationContext());
+        CameraModuleImpl.resumeRecording((int)viewTag, getReactApplicationContext());
     }
 
     @Override
     public void getSupportedRatios(final double viewTag, final Promise promise) {
-       // CameraModuleImpl.getSupportedRatios(viewTag, promise, getReactApplicationContext());
+        CameraModuleImpl.getSupportedRatios((int)viewTag, promise, getReactApplicationContext());
     }
 
     @Override
     public void getCameraIds(final double viewTag, final Promise promise) {
-       // CameraModuleImpl.getCameraIds(viewTag, promise, getReactApplicationContext());
+        CameraModuleImpl.getCameraIds((int)viewTag, promise, getReactApplicationContext());
     }
 
     @Override
     public void getAvailablePictureSizes(final String ratio, final double viewTag, final Promise promise) {
-       // CameraModuleImpl.getAvailablePictureSizes(ratio, viewTag, promise, getReactApplicationContext());
+        CameraModuleImpl.getAvailablePictureSizes(ratio, (int)viewTag, promise, getReactApplicationContext());
     }
 
     @Override
     public void checkIfRecordAudioPermissionsAreDefined(final Promise promise) {
-       // CameraModuleImpl.checkIfRecordAudioPermissionsAreDefined(promise, getReactApplicationContext());
+        CameraModuleImpl.checkIfRecordAudioPermissionsAreDefined(promise, getReactApplicationContext());
     }
 
     @Override
     public void getSupportedPreviewFpsRange(final double viewTag, final Promise promise) {
-       // CameraModuleImpl.getSupportedPreviewFpsRange(viewTag, promise, getReactApplicationContext());
+        CameraModuleImpl.getSupportedPreviewFpsRange((int)viewTag, promise, getReactApplicationContext());
     }
 
     @Override
     public void hasTorch(final Promise promise) {
-       // CameraModuleImpl.hasTorch(promise, getReactApplicationContext());
+        CameraModuleImpl.hasTorch(promise, getReactApplicationContext());
     }
 
     // Helper method to check for corrupted videos on Android
     @Override
     public void checkIfVideoIsValid(final String path, final Promise promise) {
-        //CameraModuleImpl.checkIfVideoIsValid(path, promise, getReactApplicationContext());
+        CameraModuleImpl.checkIfVideoIsValid(path, promise, getReactApplicationContext());
     }
 }

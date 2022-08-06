@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
 
 
 public class TextRecognizedEvent extends Event<TextRecognizedEvent> {
@@ -36,7 +37,7 @@ public class TextRecognizedEvent extends Event<TextRecognizedEvent> {
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_TEXT_RECOGNIZED.toString();
+    return "top" + Events.EVENT_ON_TEXT_RECOGNIZED.toString();
   }
 
   @Override

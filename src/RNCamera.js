@@ -315,11 +315,11 @@ const RecordAudioPermissionStatusEnum: {
 
 const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
-const RNCameraManager = isTurboModuleEnabled ? require("./NativeRNCamera").default : NativeModules.RNCameraModule
+const RNCameraModule = isTurboModuleEnabled ? require("./NativeRNCamera").default : NativeModules.RNCameraModule
 
-const constants = isTurboModuleEnabled ? RNCameraManager.getTurboConstants() : RNCameraManager
+const turboConstants = isTurboModuleEnabled ? RNCameraModule.getTurboConstants() : {};
 
-const CameraManager: Object =  constants || {
+const CameraManager: Object =  {...RNCameraModule, ...turboConstants} || {
     stubbed: true,
     Type: {
       back: 1,
@@ -548,12 +548,12 @@ export default class Camera extends React.Component<PropsType, StateType> {
       throw 'Camera handle cannot be null';
     }
 
-    return await CameraManager.takePicture(options, this._cameraHandle);
+    return await RNCameraModule.takePicture(options, this._cameraHandle);
   }
 
   async getSupportedRatiosAsync() {
     if (Platform.OS === 'android') {
-      return await CameraManager.getSupportedRatios(this._cameraHandle);
+      return await RNCameraModule.getSupportedRatios(this._cameraHandle);
     } else {
       throw new Error('Ratio is not supported on iOS');
     }
@@ -561,7 +561,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
 
   async getCameraIdsAsync() {
     if (Platform.OS === 'android') {
-      return await CameraManager.getCameraIds(this._cameraHandle);
+      return await RNCameraModule.getCameraIds(this._cameraHandle);
     } else {
       return await CameraManager.getCameraIds(); // iOS does not need a camera instance
     }
@@ -569,7 +569,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
 
   static async checkIfVideoIsValid(path) {
     if (Platform.OS === 'android') {
-      return await CameraManager.checkIfVideoIsValid(path);
+      return await RNCameraModule.checkIfVideoIsValid(path);
     } else {
       return true; // iOS: not implemented
     }
@@ -577,7 +577,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
 
   getSupportedPreviewFpsRange = async (): Promise<[]> => {
     if (Platform.OS === 'android') {
-      return await CameraManager.getSupportedPreviewFpsRange(this._cameraHandle);
+      return await RNCameraModule.getSupportedPreviewFpsRange(this._cameraHandle);
     } else {
       throw new Error('getSupportedPreviewFpsRange is not supported on iOS');
     }
@@ -585,7 +585,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
 
   getAvailablePictureSizes = async (): string[] => {
     //$FlowFixMe
-    return await CameraManager.getAvailablePictureSizes(this.props.ratio, this._cameraHandle);
+    return await RNCameraModule.getAvailablePictureSizes(this.props.ratio, this._cameraHandle);
   };
 
   async recordAsync(options?: RecordingOptions) {
@@ -634,31 +634,31 @@ export default class Camera extends React.Component<PropsType, StateType> {
       }
     }
 
-    return await CameraManager.record(options, this._cameraHandle);
+    return await RNCameraModule.record(options, this._cameraHandle);
   }
 
   stopRecording() {
-    CameraManager.stopRecording(this._cameraHandle);
+    RNCameraModule.stopRecording(this._cameraHandle);
   }
 
   pauseRecording() {
-    CameraManager.pauseRecording(this._cameraHandle);
+    RNCameraModule.pauseRecording(this._cameraHandle);
   }
 
   resumeRecording() {
-    CameraManager.resumeRecording(this._cameraHandle);
+    RNCameraModule.resumeRecording(this._cameraHandle);
   }
 
   pausePreview() {
-    CameraManager.pausePreview(this._cameraHandle);
+    RNCameraModule.pausePreview(this._cameraHandle);
   }
 
   isRecording() {
-    return CameraManager.isRecording(this._cameraHandle);
+    return RNCameraModule.isRecording(this._cameraHandle);
   }
 
   resumePreview() {
-    CameraManager.resumePreview(this._cameraHandle);
+    RNCameraModule.resumePreview(this._cameraHandle);
   }
 
   _onMountError = ({ nativeEvent }: EventCallbackArgumentsType) => {
@@ -918,7 +918,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
 export const Constants = Camera.Constants;
 
 export function hasTorch() {
-  return CameraManager.hasTorch();
+  return RNCameraModule.hasTorch();
 }
 
 const isFabricEnabled = global.nativeFabricUIManager != null

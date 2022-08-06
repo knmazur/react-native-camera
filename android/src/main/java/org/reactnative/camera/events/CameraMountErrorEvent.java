@@ -6,6 +6,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
 
 public class CameraMountErrorEvent extends Event<CameraMountErrorEvent> {
   private static final Pools.SynchronizedPool<CameraMountErrorEvent> EVENTS_POOL = new Pools.SynchronizedPool<>(3);
@@ -35,7 +36,7 @@ public class CameraMountErrorEvent extends Event<CameraMountErrorEvent> {
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_MOUNT_ERROR.toString();
+    return "top" + Events.EVENT_ON_MOUNT_ERROR.toString();
   }
 
   @Override

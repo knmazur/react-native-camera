@@ -10,6 +10,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
 
 public class BarcodesDetectedEvent extends Event<BarcodesDetectedEvent> {
 
@@ -59,7 +60,7 @@ public class BarcodesDetectedEvent extends Event<BarcodesDetectedEvent> {
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_BARCODES_DETECTED.toString();
+    return "top" + Events.EVENT_ON_BARCODES_DETECTED.toString();
   }
 
   @Override

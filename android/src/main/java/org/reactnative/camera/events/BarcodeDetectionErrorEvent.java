@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import org.reactnative.camera.CameraViewManager;
 import org.reactnative.barcodedetector.RNBarcodeDetector;
+import org.reactnative.camera.Events;
 
 public class BarcodeDetectionErrorEvent extends Event<BarcodeDetectionErrorEvent> {
 
@@ -37,7 +38,7 @@ public class BarcodeDetectionErrorEvent extends Event<BarcodeDetectionErrorEvent
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_BARCODE_DETECTION_ERROR.toString();
+    return "top" + Events.EVENT_ON_BARCODE_DETECTION_ERROR.toString();
   }
 
   @Override

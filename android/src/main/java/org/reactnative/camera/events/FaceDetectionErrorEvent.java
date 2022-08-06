@@ -6,6 +6,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.Events;
 import org.reactnative.facedetector.RNFaceDetector;
 
 public class FaceDetectionErrorEvent extends Event<FaceDetectionErrorEvent> {
@@ -36,7 +37,7 @@ public class FaceDetectionErrorEvent extends Event<FaceDetectionErrorEvent> {
 
   @Override
   public String getEventName() {
-    return CameraViewManager.Events.EVENT_ON_FACE_DETECTION_ERROR.toString();
+    return "top" + Events.EVENT_ON_FACE_DETECTION_ERROR.toString();
   }
 
   @Override

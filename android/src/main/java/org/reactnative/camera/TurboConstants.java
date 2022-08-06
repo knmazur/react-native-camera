@@ -147,5 +147,7 @@ public class TurboConstants {
 
         result.putMap("Orientation", getOrientationConstants());
         result.putMap("FaceDetection", getFaceDetectionConstants());
+
+        return result;
     }
 }
