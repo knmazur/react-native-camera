@@ -9,8 +9,8 @@ import com.google.android.cameraview.CameraView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.face.Face;
-import com.google.mlkit.vision.face.FaceDetector;
+//import com.google.mlkit.vision.face.Face;
+//import com.google.mlkit.vision.face.FaceDetector;
 
 import org.reactnative.camera.utils.ImageDimensions;
 import org.reactnative.facedetector.FaceDetectorUtils;
@@ -66,25 +66,25 @@ public class FaceDetectorAsyncTask extends android.os.AsyncTask<Void, Void, Void
     }
     InputImage image = InputImage.fromByteArray(mImageData, mWidth, mHeight, getFirebaseRotation(), InputImage.IMAGE_FORMAT_YV12);
 
-    FaceDetector detector = mFaceDetector.getDetector();
-    detector.process(image)
-            .addOnSuccessListener(
-                    new OnSuccessListener<List<Face>>() {
-                      @Override
-                      public void onSuccess(List<Face> faces) {
-                        WritableArray facesList = serializeEventData(faces);
-                        mDelegate.onFacesDetected(facesList);
-                        mDelegate.onFaceDetectingTaskCompleted();
-                      }
-                    })
-            .addOnFailureListener(
-                    new OnFailureListener() {
-                      @Override
-                      public void onFailure(Exception e) {
-                        Log.e(TAG, "Text recognition task failed" + e);
-                        mDelegate.onFaceDetectingTaskCompleted();
-                      }
-                    });
+//    FaceDetector detector = mFaceDetector.getDetector();
+    // detector.process(image)
+    //         .addOnSuccessListener(
+    //                 new OnSuccessListener<List<Face>>() {
+    //                   @Override
+    //                   public void onSuccess(List<Face> faces) {
+    //                     WritableArray facesList = serializeEventData(faces);
+    //                     mDelegate.onFacesDetected(facesList);
+    //                     mDelegate.onFaceDetectingTaskCompleted();
+    //                   }
+    //                 })
+    //         .addOnFailureListener(
+    //                 new OnFailureListener() {
+    //                   @Override
+    //                   public void onFailure(Exception e) {
+    //                     Log.e(TAG, "Text recognition task failed" + e);
+    //                     mDelegate.onFaceDetectingTaskCompleted();
+    //                   }
+    //                 });
     return null;
   }
 
@@ -111,20 +111,20 @@ public class FaceDetectorAsyncTask extends android.os.AsyncTask<Void, Void, Void
     return result;
   }
 
-  private WritableArray serializeEventData(List<Face> faces) {
-    WritableArray facesList = Arguments.createArray();
+  // private WritableArray serializeEventData(List<Face> faces) {
+  //   WritableArray facesList = Arguments.createArray();
 
-    for (Face face : faces) {
-      WritableMap serializedFace = FaceDetectorUtils.serializeFace(face, mScaleX, mScaleY, mWidth, mHeight, mPaddingLeft, mPaddingTop);
-      if (mImageDimensions.getFacing() == CameraView.FACING_FRONT) {
-        serializedFace = FaceDetectorUtils.rotateFaceX(serializedFace, mImageDimensions.getWidth(), mScaleX);
-      } else {
-        serializedFace = FaceDetectorUtils.changeAnglesDirection(serializedFace);
-      }
-      facesList.pushMap(serializedFace);
-    }
+  //   // for (Face face : faces) {
+  //   //   WritableMap serializedFace = FaceDetectorUtils.serializeFace(face, mScaleX, mScaleY, mWidth, mHeight, mPaddingLeft, mPaddingTop);
+  //   //   if (mImageDimensions.getFacing() == CameraView.FACING_FRONT) {
+  //   //     serializedFace = FaceDetectorUtils.rotateFaceX(serializedFace, mImageDimensions.getWidth(), mScaleX);
+  //   //   } else {
+  //   //     serializedFace = FaceDetectorUtils.changeAnglesDirection(serializedFace);
+  //   //   }
+  //   //   facesList.pushMap(serializedFace);
+  //   // }
 
-    return facesList;
-  }
+  //   return facesList;
+  // }
 
 }

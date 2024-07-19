@@ -1,10 +1,10 @@
 package org.reactnative.barcodedetector;
 
 import android.content.Context;
-import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
 
 import org.reactnative.camera.utils.ImageDimensions;
 import org.reactnative.frame.RNFrame;
@@ -26,6 +26,7 @@ public class RNBarcodeDetector {
 
     public RNBarcodeDetector(Context context) {
         mBuilder = new BarcodeScannerOptions.Builder()
+                .enableAllPotentialBarcodes()
                 .setBarcodeFormats(mBarcodeType);
     }
 
@@ -63,6 +64,9 @@ public class RNBarcodeDetector {
         }
     }
 
+    public void setEnableAllPotentialBarcodes(boolean enableAllPotentialBarcodes) {
+        
+    }
 
     public void release() {
         releaseBarcodeDetector();

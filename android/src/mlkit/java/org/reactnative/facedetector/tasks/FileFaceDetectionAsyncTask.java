@@ -16,8 +16,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.face.Face;
-import com.google.mlkit.vision.face.FaceDetector;
+//import com.google.mlkit.vision.face.Face;
+//import com.google.mlkit.vision.face.FaceDetector;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +86,7 @@ public class FileFaceDetectionAsyncTask extends AsyncTask<Void, Void, Void> {
       return null;
     }
 
-    mRNFaceDetector = detectorForOptions(mOptions, mContext);
+   // mRNFaceDetector = detectorForOptions(mOptions, mContext);
 
     try {
       ExifInterface exif = new ExifInterface(mPath);
@@ -97,23 +97,23 @@ public class FileFaceDetectionAsyncTask extends AsyncTask<Void, Void, Void> {
 
     try {
       InputImage image = InputImage.fromFilePath(mContext, Uri.parse(mUri));
-      FaceDetector detector = mRNFaceDetector.getDetector();
-      detector.process(image)
-              .addOnSuccessListener(
-                      new OnSuccessListener<List<Face>>() {
-                        @Override
-                        public void onSuccess(List<Face> faces) {
-                          serializeEventData(faces);
-                        }
-                      })
-              .addOnFailureListener(
-                      new OnFailureListener() {
-                        @Override
-                        public void onFailure(Exception e) {
-                          Log.e(ERROR_TAG, "Text recognition task failed", e);
-                          mPromise.reject(ERROR_TAG, "Text recognition task failed", e);
-                        }
-                      });
+//      FaceDetector detector = mRNFaceDetector.getDetector();
+      // detector.process(image)
+      //         .addOnSuccessListener(
+      //                 new OnSuccessListener<List<Face>>() {
+      //                   @Override
+      //                   public void onSuccess(List<Face> faces) {
+      //                     serializeEventData(faces);
+      //                   }
+      //                 })
+      //         .addOnFailureListener(
+      //                 new OnFailureListener() {
+      //                   @Override
+      //                   public void onFailure(Exception e) {
+      //                     Log.e(ERROR_TAG, "Text recognition task failed", e);
+      //                     mPromise.reject(ERROR_TAG, "Text recognition task failed", e);
+      //                   }
+      //                 });
     } catch (IOException e) {
       e.printStackTrace();
       Log.e(ERROR_TAG, "Creating Firebase Image from uri" + mUri + "failed", e);
@@ -122,46 +122,46 @@ public class FileFaceDetectionAsyncTask extends AsyncTask<Void, Void, Void> {
     return null;
   }
 
-  private void serializeEventData(List<Face> faces) {
+ //private void serializeEventData(List<Face> faces) {
     WritableMap result = Arguments.createMap();
     WritableArray facesArray = Arguments.createArray();
 
-    for(Face face : faces) {
-      WritableMap encodedFace = FaceDetectorUtils.serializeFace(face);
-      encodedFace.putDouble("yawAngle", (-encodedFace.getDouble("yawAngle") + 360) % 360);
-      encodedFace.putDouble("rollAngle", (-encodedFace.getDouble("rollAngle") + 360) % 360);
-      facesArray.pushMap(encodedFace);
-    }
+    // for(Face face : faces) {
+    //   WritableMap encodedFace = FaceDetectorUtils.serializeFace(face);
+    //   encodedFace.putDouble("yawAngle", (-encodedFace.getDouble("yawAngle") + 360) % 360);
+    //   encodedFace.putDouble("rollAngle", (-encodedFace.getDouble("rollAngle") + 360) % 360);
+    //   facesArray.pushMap(encodedFace);
+    // }
 
-    result.putArray("faces", facesArray);
+  //   result.putArray("faces", facesArray);
 
-    WritableMap image = Arguments.createMap();
-    image.putInt("width", mWidth);
-    image.putInt("height", mHeight);
-    image.putInt("orientation", mOrientation);
-    image.putString("uri", mUri);
-    result.putMap("image", image);
+  //   WritableMap image = Arguments.createMap();
+  //   image.putInt("width", mWidth);
+  //   image.putInt("height", mHeight);
+  //   image.putInt("orientation", mOrientation);
+  //   image.putString("uri", mUri);
+  //   result.putMap("image", image);
 
-    mRNFaceDetector.release();
-    mPromise.resolve(result);
-  }
+  //   mRNFaceDetector.release();
+  //   mPromise.resolve(result);
+  // }
 
-  private static RNFaceDetector detectorForOptions(ReadableMap options, Context context) {
-    RNFaceDetector detector = new RNFaceDetector(context);
-    detector.setTracking(false);
+  // private static RNFaceDetector detectorForOptions(ReadableMap options, Context context) {
+  //   RNFaceDetector detector = new RNFaceDetector(context);
+  //   detector.setTracking(false);
 
-    if(options.hasKey(MODE_OPTION_KEY)) {
-      detector.setMode(options.getInt(MODE_OPTION_KEY));
-    }
+  //   if(options.hasKey(MODE_OPTION_KEY)) {
+  //     detector.setMode(options.getInt(MODE_OPTION_KEY));
+  //   }
 
-    if(options.hasKey(RUN_CLASSIFICATIONS_OPTION_KEY)) {
-      detector.setClassificationType(options.getInt(RUN_CLASSIFICATIONS_OPTION_KEY));
-    }
+  //   if(options.hasKey(RUN_CLASSIFICATIONS_OPTION_KEY)) {
+  //     detector.setClassificationType(options.getInt(RUN_CLASSIFICATIONS_OPTION_KEY));
+  //   }
 
-    if(options.hasKey(DETECT_LANDMARKS_OPTION_KEY)) {
-      detector.setLandmarkType(options.getInt(DETECT_LANDMARKS_OPTION_KEY));
-    }
+  //   if(options.hasKey(DETECT_LANDMARKS_OPTION_KEY)) {
+  //     detector.setLandmarkType(options.getInt(DETECT_LANDMARKS_OPTION_KEY));
+  //   }
 
-    return detector;
-  }
+  //   return detector;
+  // }
 }

@@ -1,6 +1,6 @@
 package org.reactnative.facedetector;
 
-import org.reactnative.facedetector.tasks.FileFaceDetectionAsyncTask;
+//import org.reactnative.facedetector.tasks.FileFaceDetectionAsyncTask;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -41,8 +41,8 @@ private static ReactApplicationContext mScopedContext;
       private Map<String, Object> getFaceDetectionModeConstants() {
         return Collections.unmodifiableMap(new HashMap<String, Object>() {
           {
-            put("fast", RNFaceDetector.FAST_MODE);
-            put("accurate", RNFaceDetector.ACCURATE_MODE);
+         //   put("fast", RNFaceDetector.FAST_MODE);
+         //   put("accurate", RNFaceDetector.ACCURATE_MODE);
           }
         });
       }
@@ -50,8 +50,8 @@ private static ReactApplicationContext mScopedContext;
       private Map<String, Object> getFaceDetectionClassificationsConstants() {
         return Collections.unmodifiableMap(new HashMap<String, Object>() {
           {
-            put("all", RNFaceDetector.ALL_CLASSIFICATIONS);
-            put("none", RNFaceDetector.NO_CLASSIFICATIONS);
+       //     put("all", RNFaceDetector.ALL_CLASSIFICATIONS);
+        //    put("none", RNFaceDetector.NO_CLASSIFICATIONS);
           }
         });
       }
@@ -59,8 +59,8 @@ private static ReactApplicationContext mScopedContext;
       private Map<String, Object> getFaceDetectionLandmarksConstants() {
         return Collections.unmodifiableMap(new HashMap<String, Object>() {
           {
-            put("all", RNFaceDetector.ALL_LANDMARKS);
-            put("none", RNFaceDetector.NO_LANDMARKS);
+ //           put("all", RNFaceDetector.ALL_LANDMARKS);
+//            put("none", RNFaceDetector.NO_LANDMARKS);
           }
         });
       }
@@ -69,6 +69,6 @@ private static ReactApplicationContext mScopedContext;
 
   @ReactMethod
   public void detectFaces(ReadableMap options, final Promise promise) {
-    new FileFaceDetectionAsyncTask(mScopedContext, options, promise).execute();
+    //new FileFaceDetectionAsyncTask(mScopedContext, options, promise).execute();
   }
 }
