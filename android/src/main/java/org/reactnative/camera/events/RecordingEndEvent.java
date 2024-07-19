@@ -30,7 +30,7 @@ public class RecordingEndEvent extends Event<RecordingEndEvent> {
 
     @Override
     public String getEventName() {
-        return "top" + Events.EVENT_ON_RECORDING_END.toString();
+        return Events.EVENT_ON_RECORDING_END.toString();
     }
 
     @Override

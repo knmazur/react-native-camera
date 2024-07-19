@@ -38,7 +38,7 @@ public class BarcodeDetectionErrorEvent extends Event<BarcodeDetectionErrorEvent
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_BARCODE_DETECTION_ERROR.toString();
+    return Events.EVENT_ON_BARCODE_DETECTION_ERROR.toString();
   }
 
   @Override

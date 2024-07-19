@@ -12,13 +12,11 @@ import com.facebook.react.bridge.GuardedAsyncTask;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UIManager;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.NativeViewHierarchyManager;
-import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerHelper;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.Size;
 
@@ -172,211 +170,160 @@ public class CameraModuleImpl {
     }
 
     public static void pausePreview(final int viewTag, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.pausePreview();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.pausePreview();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void resumePreview(final int viewTag, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.resumePreview();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.resumePreview();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void takePicture(final ReadableMap options, final int viewTag, final Promise promise, final ReactApplicationContext context, final ScopedContext scopedContext) {
         final File cacheDirectory = scopedContext.getCacheDirectory();
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    RNCameraView cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.takePicture(options, promise, cacheDirectory);
-                    } else {
-                        promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
-                    }
-                } catch (Exception e) {
-                    promise.reject("E_TAKE_PICTURE_FAILED", e.getMessage());
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.takePicture(options, promise, cacheDirectory);
+            } else {
+                promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
             }
-        });
+        } catch (Exception e) {
+            promise.reject("E_TAKE_PICTURE_FAILED", e.getMessage());
+        }
     }
 
     public static void record(final ReadableMap options, final int viewTag, final Promise promise, final ReactApplicationContext context, final ScopedContext scopedContext) {
         final File cacheDirectory = scopedContext.getCacheDirectory();
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
-
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.record(options, promise, cacheDirectory);
-                    } else {
-                        promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
-                    }
-                } catch (Exception e) {
-                    promise.reject("E_CAPTURE_FAILED", e.getMessage());
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.record(options, promise, cacheDirectory);
+            } else {
+                promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
             }
-        });
+        } catch (Exception e) {
+            promise.reject("E_CAPTURE_FAILED", e.getMessage());
+        }
     }
 
     public static void stopRecording(final int viewTag, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.stopRecording();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.stopRecording();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void pauseRecording(final int viewTag, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.pauseRecording();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.pauseRecording();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void resumeRecording(final int viewTag, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    if (cameraView.isCameraOpened()) {
-                        cameraView.resumeRecording();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            if (cameraView.isCameraOpened()) {
+                cameraView.resumeRecording();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void getSupportedRatios(final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    WritableArray result = Arguments.createArray();
-                    if (cameraView.isCameraOpened()) {
-                        Set<AspectRatio> ratios = cameraView.getSupportedAspectRatios();
-                        for (AspectRatio ratio : ratios) {
-                            result.pushString(ratio.toString());
-                        }
-                        promise.resolve(result);
-                    } else {
-                        promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            WritableArray result = Arguments.createArray();
+            if (cameraView.isCameraOpened()) {
+                Set<AspectRatio> ratios = cameraView.getSupportedAspectRatios();
+                for (AspectRatio ratio : ratios) {
+                    result.pushString(ratio.toString());
                 }
+                promise.resolve(result);
+            } else {
+                promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void getCameraIds(final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    WritableArray result = Arguments.createArray();
-                    List<Properties> ids = cameraView.getCameraIds();
-                    for (Properties p : ids) {
-                        WritableMap m = new WritableNativeMap();
-                        m.putString("id", p.getProperty("id"));
-                        m.putInt("type", Integer.valueOf(p.getProperty("type")));
-                        result.pushMap(m);
-                    }
-                    promise.resolve(result);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.reject("E_CAMERA_FAILED", e.getMessage());
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            WritableArray result = Arguments.createArray();
+            List<Properties> ids = cameraView.getCameraIds();
+            for (Properties p : ids) {
+                WritableMap m = new WritableNativeMap();
+                m.putString("id", p.getProperty("id"));
+                m.putInt("type", Integer.valueOf(p.getProperty("type")));
+                result.pushMap(m);
             }
-        });
+            promise.resolve(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            promise.reject("E_CAMERA_FAILED", e.getMessage());
+        }
     }
 
     public static void getAvailablePictureSizes(final String ratio, final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    WritableArray result = Arguments.createArray();
-                    if (cameraView.isCameraOpened()) {
-                        SortedSet<Size> sizes = cameraView.getAvailablePictureSizes(AspectRatio.parse(ratio));
-                        for (Size size : sizes) {
-                            result.pushString(size.toString());
-                        }
-                        promise.resolve(result);
-                    } else {
-                        promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.reject("E_CAMERA_BAD_VIEWTAG", "getAvailablePictureSizesAsync: Expected a Camera component");
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            WritableArray result = Arguments.createArray();
+            if (cameraView.isCameraOpened()) {
+                SortedSet<Size> sizes = cameraView.getAvailablePictureSizes(AspectRatio.parse(ratio));
+                for (Size size : sizes) {
+                    result.pushString(size.toString());
                 }
+                promise.resolve(result);
+            } else {
+                promise.reject("E_CAMERA_UNAVAILABLE", "Camera is not running");
             }
-        });
+        } catch (Exception e) {
+            promise.reject("E_CAMERA_BAD_VIEWTAG", "getAvailablePictureSizesAsync: Expected a Camera component");
+        }
     }
 
     public static void checkIfRecordAudioPermissionsAreDefined(final Promise promise, final ReactApplicationContext context) {
@@ -397,28 +344,22 @@ public class CameraModuleImpl {
     }
 
     public static void getSupportedPreviewFpsRange(final int viewTag, final Promise promise, final ReactApplicationContext context) {
-        context.runOnUiQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                final RNCameraView cameraView;
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(context, viewTag);
 
-                try {
-                    cameraView = (RNCameraView) UIManagerHelper.getUIManagerForReactTag(context, viewTag).resolveView(viewTag);
-                    WritableArray result = Arguments.createArray();
-                    ArrayList<int[]> ranges = cameraView.getSupportedPreviewFpsRange();
-                    for (int[] range : ranges) {
-                        WritableMap m = new WritableNativeMap();
-                        m.putInt("MINIMUM_FPS", range[0]);
-                        m.putInt("MAXIMUM_FPS", range[1]);
-                        result.pushMap(m);
-                    }
-                    promise.resolve(result);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.reject("E_CAMERA_BAD_VIEWTAG", "getSupportedPreviewFpsRangeAsync: Expected a Camera component");
-                }
+        try {
+            final RNCameraView cameraView = (RNCameraView) uiManager.resolveView(viewTag);
+            WritableArray result = Arguments.createArray();
+            ArrayList<int[]> ranges = cameraView.getSupportedPreviewFpsRange();
+            for (int[] range : ranges) {
+                WritableMap m = new WritableNativeMap();
+                m.putInt("MINIMUM_FPS", range[0]);
+                m.putInt("MAXIMUM_FPS", range[1]);
+                result.pushMap(m);
             }
-        });
+            promise.resolve(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void hasTorch(final Promise promise, final ReactApplicationContext context) {

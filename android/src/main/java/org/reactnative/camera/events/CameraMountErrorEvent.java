@@ -36,7 +36,7 @@ public class CameraMountErrorEvent extends Event<CameraMountErrorEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_MOUNT_ERROR.toString();
+    return Events.EVENT_ON_MOUNT_ERROR.toString();
   }
 
   @Override

@@ -46,7 +46,7 @@ public class TouchEvent extends Event<TouchEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_TOUCH.toString();
+    return Events.EVENT_ON_TOUCH.toString();
   }
 
   @Override

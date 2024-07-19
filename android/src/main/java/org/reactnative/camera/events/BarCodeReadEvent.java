@@ -60,7 +60,7 @@ public class BarCodeReadEvent extends Event<BarCodeReadEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_BAR_CODE_READ.toString();
+    return Events.EVENT_ON_BAR_CODE_READ.toString();
   }
 
   @Override

@@ -38,7 +38,7 @@ public class RecordingStartEvent extends Event<RecordingStartEvent> {
 
     @Override
     public String getEventName() {
-        return "top" + Events.EVENT_ON_RECORDING_START.toString();
+        return  Events.EVENT_ON_RECORDING_START.toString();
     }
 
     @Override

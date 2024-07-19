@@ -30,7 +30,7 @@ public class PictureTakenEvent extends Event<PictureTakenEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_PICTURE_TAKEN.toString();
+    return Events.EVENT_ON_PICTURE_TAKEN.toString();
   }
 
   @Override

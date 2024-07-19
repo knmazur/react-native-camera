@@ -30,7 +30,7 @@ public class CameraReadyEvent extends Event<CameraReadyEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_CAMERA_READY.toString();
+    return Events.EVENT_CAMERA_READY.toString();
   }
 
   @Override

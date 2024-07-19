@@ -1,7 +1,7 @@
 // @flow
 import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 import type {HostComponent} from 'react-native';
-import {Int32,Float} from 'react-native/Libraries/Types/CodegenTypes';
+import {Int32,Float, DirectEventHandler} from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
 
@@ -36,6 +36,19 @@ interface NativeProps extends ViewProps {
     textRecognizerEnabled: boolean;
     rectOfInterest: Readonly<{}>;
     cameraViewDimensions: Readonly<{}>;
+    onCameraReady?: DirectEventHandler<{}>;
+    onMountError: DirectEventHandler<{}>;
+    onBarCodeRead: DirectEventHandler<{}>;
+    onFacesDetected: DirectEventHandler<{}>;
+    onGoogleVisionBarcodesDetected: DirectEventHandler<{}>;
+    onFaceDetectionError: DirectEventHandler<{}>;
+    onGoogleVisionBarcodeDetectionError: DirectEventHandler<{}>;
+    onTextRecognized: DirectEventHandler<{}>;
+    onPictureTaken: DirectEventHandler<{}>;
+    onPictureSaved: DirectEventHandler<{}>;
+    onRecordingStart: DirectEventHandler<{}>;
+    onRecordingEnd: DirectEventHandler<{}>;
+    onTouch: DirectEventHandler<{}>;
 }
 
 export default (codegenNativeComponent<NativeProps>('RNCamera') as HostComponent<NativeProps>);

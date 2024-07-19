@@ -49,7 +49,7 @@ public class FacesDetectedEvent extends Event<FacesDetectedEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_FACES_DETECTED.toString();
+    return Events.EVENT_ON_FACES_DETECTED.toString();
   }
 
   @Override

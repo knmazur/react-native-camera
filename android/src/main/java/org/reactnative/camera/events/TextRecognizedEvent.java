@@ -37,7 +37,7 @@ public class TextRecognizedEvent extends Event<TextRecognizedEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_TEXT_RECOGNIZED.toString();
+    return Events.EVENT_ON_TEXT_RECOGNIZED.toString();
   }
 
   @Override

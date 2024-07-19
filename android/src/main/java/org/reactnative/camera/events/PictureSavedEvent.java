@@ -37,7 +37,7 @@ public class PictureSavedEvent extends Event<PictureSavedEvent> {
     
     @Override
     public String getEventName() {
-        return "top" + Events.EVENT_ON_PICTURE_SAVED.toString();
+        return Events.EVENT_ON_PICTURE_SAVED.toString();
     }
     
     @Override

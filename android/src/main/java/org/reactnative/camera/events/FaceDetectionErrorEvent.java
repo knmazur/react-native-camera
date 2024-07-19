@@ -37,7 +37,7 @@ public class FaceDetectionErrorEvent extends Event<FaceDetectionErrorEvent> {
 
   @Override
   public String getEventName() {
-    return "top" + Events.EVENT_ON_FACE_DETECTION_ERROR.toString();
+    return Events.EVENT_ON_FACE_DETECTION_ERROR.toString();
   }
 
   @Override
