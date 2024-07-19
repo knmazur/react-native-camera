@@ -201,6 +201,12 @@ public class CameraViewManager extends ViewGroupManager<RNCameraView> implements
   }
 
   @Override
+  @ReactProp(name = "googleVisionEnableAllPotentialBarcodes") 
+  public void setGoogleVisionEnableAllPotentialBarcodes(RNCameraView view, boolean enableAllPotentialBarcodes) {
+    CameraViewManagerImpl.setGoogleVisionEnableAllPotentialBarcodes(view, enableAllPotentialBarcodes);
+  }
+
+  @Override
   @ReactProp(name = "googleVisionBarcodeType")
   public void setGoogleVisionBarcodeType(RNCameraView view, int barcodeType) {
     CameraViewManagerImpl.setGoogleVisionBarcodeType(view, barcodeType);

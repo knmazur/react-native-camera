@@ -547,8 +547,10 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
   }
 
   public void setGoogleVisionEnableAllPotentialBarcodes(boolean enableAllPotentialBarcodes) {
-    mGoogleVisionEnableAllPotentialBarcodes = enableAllPotentialBarcodes;
-    mGoogleBarcodeDetector.setEnableAllPotentialBarcodes(enableAllPotentialBarcodes);
+      mGoogleVisionEnableAllPotentialBarcodes = enableAllPotentialBarcodes;
+      if(mGoogleBarcodeDetector != null) {
+          mGoogleBarcodeDetector.setEnableAllPotentialBarcodes(enableAllPotentialBarcodes);
+      }
   }
 
   public void setGoogleVisionBarcodeMode(int barcodeMode) {

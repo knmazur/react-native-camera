@@ -147,6 +147,10 @@ public class CameraViewManagerImpl {
         view.setShouldRecognizeText(textRecognizerEnabled);
     }
 
+    public static void setGoogleVisionEnableAllPotentialBarcodes(RNCameraView view, boolean enableAllPotentialBarcodes) {
+        view.setGoogleVisionEnableAllPotentialBarcodes(enableAllPotentialBarcodes);
+    }
+
     /**---limit scan area addition---**/
     public static void setRectOfInterest(RNCameraView view, ReadableMap coordinates) {
         if(coordinates != null){

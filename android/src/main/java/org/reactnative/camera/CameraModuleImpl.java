@@ -58,8 +58,8 @@ public class CameraModuleImpl {
                     private Map<String, Object> getFaceDetectionModeConstants() {
                         return Collections.unmodifiableMap(new HashMap<String, Object>() {
                             {
-                                put("fast", RNFaceDetector.FAST_MODE);
-                                put("accurate", RNFaceDetector.ACCURATE_MODE);
+                               // put("fast", RNFaceDetector.FAST_MODE);
+                                //put("accurate", RNFaceDetector.ACCURATE_MODE);
                             }
                         });
                     }
@@ -67,8 +67,8 @@ public class CameraModuleImpl {
                     private Map<String, Object> getFaceDetectionClassificationsConstants() {
                         return Collections.unmodifiableMap(new HashMap<String, Object>() {
                             {
-                                put("all", RNFaceDetector.ALL_CLASSIFICATIONS);
-                                put("none", RNFaceDetector.NO_CLASSIFICATIONS);
+                                //put("all", RNFaceDetector.ALL_CLASSIFICATIONS);
+                                //put("none", RNFaceDetector.NO_CLASSIFICATIONS);
                             }
                         });
                     }
@@ -76,8 +76,8 @@ public class CameraModuleImpl {
                     private Map<String, Object> getFaceDetectionLandmarksConstants() {
                         return Collections.unmodifiableMap(new HashMap<String, Object>() {
                             {
-                                put("all", RNFaceDetector.ALL_LANDMARKS);
-                                put("none", RNFaceDetector.NO_LANDMARKS);
+                                //put("all", RNFaceDetector.ALL_LANDMARKS);
+                               // put("none", RNFaceDetector.NO_LANDMARKS);
                             }
                         });
                     }

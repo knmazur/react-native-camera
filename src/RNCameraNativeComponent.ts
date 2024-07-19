@@ -30,6 +30,7 @@ interface NativeProps extends ViewProps {
     faceDetectionLandmarks: Int32;
     faceDetectionClassifications: Int32;
     trackingEnabled: boolean;
+    googleVisionEnableAllPotentialBarcodes: boolean;
     googleVisionBarcodeDetectorEnabled: boolean;
     googleVisionBarcodeType: Int32;
     googleVisionBarcodeMode: Int32;

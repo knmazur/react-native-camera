@@ -163,7 +163,7 @@ public class CameraViewManager extends ViewGroupManager<RNCameraView> {
 
   @ReactProp(name = "googleVisionEnableAllPotentialBarcodes") 
   public void setGoogleVisionEnableAllPotentialBarcodes(RNCameraView view, boolean enableAllPotentialBarcodes) {
-    view.setGoogleVisionEnableAllPotentialBarcodes(enableAllPotentialBarcodes);
+    CameraViewManagerImpl.setGoogleVisionEnableAllPotentialBarcodes(view, enableAllPotentialBarcodes);
   }
 
   @ReactProp(name = "googleVisionBarcodeMode")

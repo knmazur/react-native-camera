@@ -7,7 +7,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.zxing.BarcodeFormat;
 
 import org.reactnative.barcodedetector.BarcodeFormatUtils;
-import org.reactnative.facedetector.RNFaceDetector;
+//import org.reactnative.facedetector.RNFaceDetector;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,22 +16,22 @@ import java.util.Map;
 public class TurboConstants {
     private WritableMap getFaceDetectionModeConstants() {
         WritableMap result = Arguments.createMap();
-        result.putInt("fast", RNFaceDetector.FAST_MODE);
-        result.putInt("accurate", RNFaceDetector.ACCURATE_MODE);
+        //result.putInt("fast", RNFaceDetector.FAST_MODE);
+        //result.putInt("accurate", RNFaceDetector.ACCURATE_MODE);
         return result;
     }
 
     private WritableMap getFaceDetectionClassificationsConstants() {
         WritableMap result = Arguments.createMap();
-        result.putInt("all", RNFaceDetector.ALL_CLASSIFICATIONS);
-        result.putInt("none", RNFaceDetector.NO_CLASSIFICATIONS);
+        //result.putInt("all", RNFaceDetector.ALL_CLASSIFICATIONS);
+        //result.putInt("none", RNFaceDetector.NO_CLASSIFICATIONS);
         return result;
     }
 
     private WritableMap getFaceDetectionLandmarksConstants() {
         WritableMap result = Arguments.createMap();
-        result.putInt("all", RNFaceDetector.ALL_LANDMARKS);
-        result.putInt("none", RNFaceDetector.NO_LANDMARKS);
+        //result.putInt("all", RNFaceDetector.ALL_LANDMARKS);
+        //result.putInt("none", RNFaceDetector.NO_LANDMARKS);
         return result;
 
     }
