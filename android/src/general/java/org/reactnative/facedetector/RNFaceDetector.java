@@ -59,7 +59,8 @@ public class RNFaceDetector {
       mPreviousDimensions = frame.getDimensions();
     }
 
-    return mFaceDetector.process(frame.getFrame()).getResult();
+    //return mFaceDetector.process(frame.getFrame()).getResult();
+    return null;
   }
 
   public void setTracking(boolean trackingEnabled) {
@@ -102,7 +103,7 @@ public class RNFaceDetector {
 
   private void releaseFaceDetector() {
     if (mFaceDetector != null) {
-      mFaceDetector.close();
+//      mFaceDetector.close();
       mFaceDetector = null;
     }
   }

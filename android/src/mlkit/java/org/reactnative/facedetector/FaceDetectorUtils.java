@@ -5,8 +5,8 @@ import android.graphics.PointF;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.google.mlkit.vision.face.Face;
-import com.google.mlkit.vision.face.FaceLandmark;
+//import com.google.mlkit.vision.face.Face;
+//import com.google.mlkit.vision.face.FaceLandmark;
 
 public class FaceDetectorUtils {
   private static final String[] landmarkNames = {
@@ -15,83 +15,83 @@ public class FaceDetectorUtils {
           "rightEarPosition", "rightEyePosition", "rightMouthPosition"
   };
 
-  public static WritableMap serializeFace(Face face) {
-    return serializeFace(face, 1, 1, 0, 0, 0, 0);
-  }
+  // public static WritableMap serializeFace(Face face) {
+  //   return serializeFace(face, 1, 1, 0, 0, 0, 0);
+  // }
 
-  public static WritableMap serializeFace(Face face, double scaleX, double scaleY, int width, int height, int paddingLeft, int paddingTop) {
-    WritableMap encodedFace = Arguments.createMap();
+  // public static WritableMap serializeFace(Face face, double scaleX, double scaleY, int width, int height, int paddingLeft, int paddingTop) {
+  //   WritableMap encodedFace = Arguments.createMap();
 
-    int id = 0;
-    // If face tracking was enabled:
-    if (face.getTrackingId() != null) {
-      id = face.getTrackingId();
-    }
+  //   int id = 0;
+  //   // If face tracking was enabled:
+  //   if (face.getTrackingId() != null) {
+  //     id = face.getTrackingId();
+  //   }
 
 
-    encodedFace.putInt("faceID", id);
-    encodedFace.putDouble("rollAngle", face.getHeadEulerAngleZ());
-    encodedFace.putDouble("yawAngle", face.getHeadEulerAngleY());
+  //   encodedFace.putInt("faceID", id);
+  //   encodedFace.putDouble("rollAngle", face.getHeadEulerAngleZ());
+  //   encodedFace.putDouble("yawAngle", face.getHeadEulerAngleY());
 
-    // If classification was enabled:
-    if (face.getSmilingProbability() != null) {
-      encodedFace.putDouble("smilingProbability", face.getSmilingProbability());
-    }
-    if (face.getLeftEyeOpenProbability() != null) {
-      encodedFace.putDouble("leftEyeOpenProbability", face.getLeftEyeOpenProbability());
-    }
-    if (face.getRightEyeOpenProbability() != null) {
-      encodedFace.putDouble("rightEyeOpenProbability", face.getRightEyeOpenProbability());
-    }
-    int[] landmarks = {
-            FaceLandmark.MOUTH_BOTTOM,
-            FaceLandmark.LEFT_CHEEK,
-            FaceLandmark.LEFT_EAR,
-            FaceLandmark.LEFT_EYE,
-            FaceLandmark.MOUTH_LEFT,
-            FaceLandmark.NOSE_BASE,
-            FaceLandmark.RIGHT_CHEEK,
-            FaceLandmark.RIGHT_EAR,
-            FaceLandmark.RIGHT_EYE,
-            FaceLandmark.MOUTH_RIGHT};
+  //   // If classification was enabled:
+  //   if (face.getSmilingProbability() != null) {
+  //     encodedFace.putDouble("smilingProbability", face.getSmilingProbability());
+  //   }
+  //   if (face.getLeftEyeOpenProbability() != null) {
+  //     encodedFace.putDouble("leftEyeOpenProbability", face.getLeftEyeOpenProbability());
+  //   }
+  //   if (face.getRightEyeOpenProbability() != null) {
+  //     encodedFace.putDouble("rightEyeOpenProbability", face.getRightEyeOpenProbability());
+  //   }
+  //   // int[] landmarks = {
+  //   //         FaceLandmark.MOUTH_BOTTOM,
+  //   //         FaceLandmark.LEFT_CHEEK,
+  //   //         FaceLandmark.LEFT_EAR,
+  //   //         FaceLandmark.LEFT_EYE,
+  //   //         FaceLandmark.MOUTH_LEFT,
+  //   //         FaceLandmark.NOSE_BASE,
+  //   //         FaceLandmark.RIGHT_CHEEK,
+  //   //         FaceLandmark.RIGHT_EAR,
+  //   //         FaceLandmark.RIGHT_EYE,
+  //   //         FaceLandmark.MOUTH_RIGHT};
 
-    for (int i = 0; i < landmarks.length; ++i) {
-      FaceLandmark landmark = face.getLandmark(landmarks[i]);
-      if (landmark != null) {
-        encodedFace.putMap(landmarkNames[i], mapFromPoint(landmark.getPosition(), scaleX, scaleY, width, height, paddingLeft, paddingTop));
-      }
-    }
+  //   // for (int i = 0; i < landmarks.length; ++i) {
+  //   //   FaceLandmark landmark = face.getLandmark(landmarks[i]);
+  //   //   if (landmark != null) {
+  //   //     encodedFace.putMap(landmarkNames[i], mapFromPoint(landmark.getPosition(), scaleX, scaleY, width, height, paddingLeft, paddingTop));
+  //   //   }
+  //   // }
 
-    WritableMap origin = Arguments.createMap();
-    Float x = face.getBoundingBox().exactCenterX() - (face.getBoundingBox().width() / 2 );
-    Float y = face.getBoundingBox().exactCenterY() - (face.getBoundingBox().height() / 2);
-    if (face.getBoundingBox().exactCenterX() < width / 2) {
-      x = x + paddingLeft / 2;
-    } else if (face.getBoundingBox().exactCenterX() > width / 2) {
-      x = x - paddingLeft / 2;
-    }
+  //   WritableMap origin = Arguments.createMap();
+  //   Float x = face.getBoundingBox().exactCenterX() - (face.getBoundingBox().width() / 2 );
+  //   Float y = face.getBoundingBox().exactCenterY() - (face.getBoundingBox().height() / 2);
+  //   if (face.getBoundingBox().exactCenterX() < width / 2) {
+  //     x = x + paddingLeft / 2;
+  //   } else if (face.getBoundingBox().exactCenterX() > width / 2) {
+  //     x = x - paddingLeft / 2;
+  //   }
 
-    if (face.getBoundingBox().exactCenterY() < height / 2) {
-      y = y + paddingTop / 2;
-    } else if (face.getBoundingBox().exactCenterY() > height / 2) {
-      y = y - paddingTop / 2;
-    }
+  //   if (face.getBoundingBox().exactCenterY() < height / 2) {
+  //     y = y + paddingTop / 2;
+  //   } else if (face.getBoundingBox().exactCenterY() > height / 2) {
+  //     y = y - paddingTop / 2;
+  //   }
 
-    origin.putDouble("x", x * scaleX);
-    origin.putDouble("y", y * scaleY);
+  //   origin.putDouble("x", x * scaleX);
+  //   origin.putDouble("y", y * scaleY);
 
-    WritableMap size = Arguments.createMap();
-    size.putDouble("width", face.getBoundingBox().width() * scaleX);
-    size.putDouble("height", face.getBoundingBox().height() * scaleY);
+  //   WritableMap size = Arguments.createMap();
+  //   size.putDouble("width", face.getBoundingBox().width() * scaleX);
+  //   size.putDouble("height", face.getBoundingBox().height() * scaleY);
 
-    WritableMap bounds = Arguments.createMap();
-    bounds.putMap("origin", origin);
-    bounds.putMap("size", size);
+  //   WritableMap bounds = Arguments.createMap();
+  //   bounds.putMap("origin", origin);
+  //   bounds.putMap("size", size);
 
-    encodedFace.putMap("bounds", bounds);
+  //   encodedFace.putMap("bounds", bounds);
 
-    return encodedFace;
-  }
+  //   return encodedFace;
+  // }
 
   public static WritableMap rotateFaceX(WritableMap face, int sourceWidth, double scaleX) {
     ReadableMap faceBounds = face.getMap("bounds");

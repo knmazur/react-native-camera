@@ -3,10 +3,10 @@ package org.reactnative.barcodedetector;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
+import com.google.mlkit.vision.barcode.common.Barcode;
 
 
 public class RNBarcodeDetector {
@@ -18,11 +18,13 @@ public class RNBarcodeDetector {
 
     private BarcodeScanner mBarcodeDetector = null;
     private BarcodeScannerOptions.Builder  mBuilder;
+    private boolean mEnableAllPotentialBarcodes = false;
 
     private int mBarcodeType = Barcode.FORMAT_ALL_FORMATS;
 
     public RNBarcodeDetector(Context context) {
-        mBuilder = new BarcodeScannerOptions.Builder().setBarcodeFormats(mBarcodeType);
+        mBuilder = new BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(mBarcodeType);
     }
 
     public boolean isOperational() {
@@ -46,6 +48,20 @@ public class RNBarcodeDetector {
         }
     }
 
+    public void setEnableAllPotentialBarcodes(boolean enableAllPotentialBarcodes) {
+        if (mEnableAllPotentialBarcodes != enableAllPotentialBarcodes) {
+            release();
+
+            if(enableAllPotentialBarcodes) {
+                mBuilder.enableAllPotentialBarcodes();
+            } else {
+                 mBuilder = new BarcodeScannerOptions.Builder()
+                    .setBarcodeFormats(mBarcodeType);
+            }
+            
+            mEnableAllPotentialBarcodes = enableAllPotentialBarcodes;
+        }
+    }
 
     public void release() {
         if (mBarcodeDetector != null) {

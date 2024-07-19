@@ -27,9 +27,17 @@ import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.Result;
 import org.reactnative.barcodedetector.RNBarcodeDetector;
-import org.reactnative.camera.tasks.*;
+//import org.reactnative.camera.tasks.*;
+import org.reactnative.camera.tasks.BarCodeScannerAsyncTask;
+import org.reactnative.camera.tasks.BarCodeScannerAsyncTaskDelegate;
+import org.reactnative.camera.tasks.BarcodeDetectorAsyncTask;
+import org.reactnative.camera.tasks.BarcodeDetectorAsyncTaskDelegate;
+import org.reactnative.camera.tasks.PictureSavedDelegate;
+import org.reactnative.camera.tasks.ResolveTakenPictureAsyncTask;
+import org.reactnative.camera.tasks.TextRecognizerAsyncTask;
+import org.reactnative.camera.tasks.TextRecognizerAsyncTaskDelegate;
 import org.reactnative.camera.utils.RNFileUtils;
-import org.reactnative.facedetector.RNFaceDetector;
+//import org.reactnative.facedetector.RNFaceDetector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,8 +46,10 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class RNCameraView extends CameraView implements LifecycleEventListener, BarCodeScannerAsyncTaskDelegate, FaceDetectorAsyncTaskDelegate,
-    BarcodeDetectorAsyncTaskDelegate, TextRecognizerAsyncTaskDelegate, PictureSavedDelegate {
+//public class RNCameraView extends CameraView implements LifecycleEventListener, BarCodeScannerAsyncTaskDelegate, FaceDetectorAsyncTaskDelegate,
+//        BarcodeDetectorAsyncTaskDelegate, TextRecognizerAsyncTaskDelegate, PictureSavedDelegate {
+public class RNCameraView extends CameraView implements LifecycleEventListener, BarCodeScannerAsyncTaskDelegate,
+        BarcodeDetectorAsyncTaskDelegate, TextRecognizerAsyncTaskDelegate, PictureSavedDelegate {
   private ThemedReactContext mThemedReactContext;
   private Queue<Promise> mPictureTakenPromises = new ConcurrentLinkedQueue<>();
   private Map<Promise, ReadableMap> mPictureTakenOptions = new ConcurrentHashMap<>();
@@ -61,24 +71,25 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
 
   // Concurrency lock for scanners to avoid flooding the runtime
   public volatile boolean barCodeScannerTaskLock = false;
-  public volatile boolean faceDetectorTaskLock = false;
+ // public volatile boolean faceDetectorTaskLock = false;
   public volatile boolean googleBarcodeDetectorTaskLock = false;
   public volatile boolean textRecognizerTaskLock = false;
 
   // Scanning-related properties
   private MultiFormatReader mMultiFormatReader;
-  private RNFaceDetector mFaceDetector;
+ // private RNFaceDetector mFaceDetector;
   private RNBarcodeDetector mGoogleBarcodeDetector;
   private boolean mShouldDetectFaces = false;
   private boolean mShouldGoogleDetectBarcodes = false;
   private boolean mShouldScanBarCodes = false;
   private boolean mShouldRecognizeText = false;
   private boolean mShouldDetectTouches = false;
-  private int mFaceDetectorMode = RNFaceDetector.FAST_MODE;
-  private int mFaceDetectionLandmarks = RNFaceDetector.NO_LANDMARKS;
-  private int mFaceDetectionClassifications = RNFaceDetector.NO_CLASSIFICATIONS;
+ // private int mFaceDetectorMode = RNFaceDetector.FAST_MODE;
+ // private int mFaceDetectionLandmarks = RNFaceDetector.NO_LANDMARKS;
+ // private int mFaceDetectionClassifications = RNFaceDetector.NO_CLASSIFICATIONS;
   private int mGoogleVisionBarCodeType = RNBarcodeDetector.ALL_FORMATS;
   private int mGoogleVisionBarCodeMode = RNBarcodeDetector.NORMAL_MODE;
+  private boolean mGoogleVisionEnableAllPotentialBarcodes = false;
   private boolean mTrackingEnabled = true;
   private int mPaddingX;
   private int mPaddingY;
@@ -163,10 +174,14 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
       public void onFramePreview(CameraView cameraView, byte[] data, int width, int height, int rotation) {
         int correctRotation = RNCameraViewHelper.getCorrectCameraRotation(rotation, getFacing(), getCameraOrientation());
         boolean willCallBarCodeTask = mShouldScanBarCodes && !barCodeScannerTaskLock && cameraView instanceof BarCodeScannerAsyncTaskDelegate;
-        boolean willCallFaceTask = mShouldDetectFaces && !faceDetectorTaskLock && cameraView instanceof FaceDetectorAsyncTaskDelegate;
+    //    boolean willCallFaceTask = mShouldDetectFaces && !faceDetectorTaskLock && cameraView instanceof FaceDetectorAsyncTaskDelegate;
         boolean willCallGoogleBarcodeTask = mShouldGoogleDetectBarcodes && !googleBarcodeDetectorTaskLock && cameraView instanceof BarcodeDetectorAsyncTaskDelegate;
         boolean willCallTextTask = mShouldRecognizeText && !textRecognizerTaskLock && cameraView instanceof TextRecognizerAsyncTaskDelegate;
-        if (!willCallBarCodeTask && !willCallFaceTask && !willCallGoogleBarcodeTask && !willCallTextTask) {
+//        if (!willCallBarCodeTask && !willCallFaceTask && !willCallGoogleBarcodeTask && !willCallTextTask) {
+//          return;
+//        }
+
+        if (!willCallBarCodeTask && !willCallGoogleBarcodeTask && !willCallTextTask) {
           return;
         }
 
@@ -180,11 +195,11 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
           new BarCodeScannerAsyncTask(delegate, mMultiFormatReader, data, width, height, mLimitScanArea, mScanAreaX, mScanAreaY, mScanAreaWidth, mScanAreaHeight, mCameraViewWidth, mCameraViewHeight, getAspectRatio().toFloat()).execute();
         }
 
-        if (willCallFaceTask) {
-          faceDetectorTaskLock = true;
-          FaceDetectorAsyncTaskDelegate delegate = (FaceDetectorAsyncTaskDelegate) cameraView;
-          new FaceDetectorAsyncTask(delegate, mFaceDetector, data, width, height, correctRotation, getResources().getDisplayMetrics().density, getFacing(), getWidth(), getHeight(), mPaddingX, mPaddingY).execute();
-        }
+//        if (willCallFaceTask) {
+//          faceDetectorTaskLock = true;
+//          FaceDetectorAsyncTaskDelegate delegate = (FaceDetectorAsyncTaskDelegate) cameraView;
+//          new FaceDetectorAsyncTask(delegate, mFaceDetector, data, width, height, correctRotation, getResources().getDisplayMetrics().density, getFacing(), getWidth(), getHeight(), mPaddingX, mPaddingY).execute();
+//        }
 
         if (willCallGoogleBarcodeTask) {
           googleBarcodeDetectorTaskLock = true;
@@ -443,45 +458,45 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
    * Initial setup of the face detector
    */
   private void setupFaceDetector() {
-    mFaceDetector = new RNFaceDetector(mThemedReactContext);
-    mFaceDetector.setMode(mFaceDetectorMode);
-    mFaceDetector.setLandmarkType(mFaceDetectionLandmarks);
-    mFaceDetector.setClassificationType(mFaceDetectionClassifications);
-    mFaceDetector.setTracking(mTrackingEnabled);
+//    mFaceDetector = new RNFaceDetector(mThemedReactContext);
+//    mFaceDetector.setMode(mFaceDetectorMode);
+//    mFaceDetector.setLandmarkType(mFaceDetectionLandmarks);
+//    mFaceDetector.setClassificationType(mFaceDetectionClassifications);
+//    mFaceDetector.setTracking(mTrackingEnabled);
   }
 
   public void setFaceDetectionLandmarks(int landmarks) {
-    mFaceDetectionLandmarks = landmarks;
-    if (mFaceDetector != null) {
-      mFaceDetector.setLandmarkType(landmarks);
-    }
+//    mFaceDetectionLandmarks = landmarks;
+//    if (mFaceDetector != null) {
+//      mFaceDetector.setLandmarkType(landmarks);
+//    }
   }
 
   public void setFaceDetectionClassifications(int classifications) {
-    mFaceDetectionClassifications = classifications;
-    if (mFaceDetector != null) {
-      mFaceDetector.setClassificationType(classifications);
-    }
+//    mFaceDetectionClassifications = classifications;
+//    if (mFaceDetector != null) {
+//      mFaceDetector.setClassificationType(classifications);
+//    }
   }
 
   public void setFaceDetectionMode(int mode) {
-    mFaceDetectorMode = mode;
-    if (mFaceDetector != null) {
-      mFaceDetector.setMode(mode);
-    }
+//    mFaceDetectorMode = mode;
+//    if (mFaceDetector != null) {
+//      mFaceDetector.setMode(mode);
+//    }
   }
 
   public void setTracking(boolean trackingEnabled) {
-    mTrackingEnabled = trackingEnabled;
-    if (mFaceDetector != null) {
-      mFaceDetector.setTracking(trackingEnabled);
-    }
+//    mTrackingEnabled = trackingEnabled;
+//    if (mFaceDetector != null) {
+//      mFaceDetector.setTracking(trackingEnabled);
+//    }
   }
 
   public void setShouldDetectFaces(boolean shouldDetectFaces) {
-    if (shouldDetectFaces && mFaceDetector == null) {
-      setupFaceDetector();
-    }
+//    if (shouldDetectFaces && mFaceDetector == null) {
+//      setupFaceDetector();
+//    }
     this.mShouldDetectFaces = shouldDetectFaces;
     setScanning(mShouldDetectFaces || mShouldGoogleDetectBarcodes || mShouldScanBarCodes || mShouldRecognizeText);
   }
@@ -494,18 +509,18 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
     RNCameraViewHelper.emitFacesDetectedEvent(this, data);
   }
 
-  public void onFaceDetectionError(RNFaceDetector faceDetector) {
-    if (!mShouldDetectFaces) {
-      return;
-    }
-
-    RNCameraViewHelper.emitFaceDetectionErrorEvent(this, faceDetector);
-  }
-
-  @Override
-  public void onFaceDetectingTaskCompleted() {
-    faceDetectorTaskLock = false;
-  }
+//  public void onFaceDetectionError(RNFaceDetector faceDetector) {
+//    if (!mShouldDetectFaces) {
+//      return;
+//    }
+//
+//    RNCameraViewHelper.emitFaceDetectionErrorEvent(this, faceDetector);
+//  }
+//
+//  @Override
+//  public void onFaceDetectingTaskCompleted() {
+//    faceDetectorTaskLock = false;
+//  }
 
   /**
    * Initial setup of the barcode detector
@@ -513,6 +528,7 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
   private void setupBarcodeDetector() {
     mGoogleBarcodeDetector = new RNBarcodeDetector(mThemedReactContext);
     mGoogleBarcodeDetector.setBarcodeType(mGoogleVisionBarCodeType);
+    mGoogleBarcodeDetector.setEnableAllPotentialBarcodes(mGoogleVisionEnableAllPotentialBarcodes);
   }
 
   public void setShouldGoogleDetectBarcodes(boolean shouldDetectBarcodes) {
@@ -528,6 +544,11 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
     if (mGoogleBarcodeDetector != null) {
       mGoogleBarcodeDetector.setBarcodeType(barcodeType);
     }
+  }
+
+  public void setGoogleVisionEnableAllPotentialBarcodes(boolean enableAllPotentialBarcodes) {
+    mGoogleVisionEnableAllPotentialBarcodes = enableAllPotentialBarcodes;
+    mGoogleBarcodeDetector.setEnableAllPotentialBarcodes(enableAllPotentialBarcodes);
   }
 
   public void setGoogleVisionBarcodeMode(int barcodeMode) {
@@ -629,9 +650,9 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
 
   @Override
   public void onHostDestroy() {
-    if (mFaceDetector != null) {
-      mFaceDetector.release();
-    }
+//    if (mFaceDetector != null) {
+//      mFaceDetector.release();
+//    }
     if (mGoogleBarcodeDetector != null) {
       mGoogleBarcodeDetector.release();
     }

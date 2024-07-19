@@ -229,6 +229,7 @@ export interface RNCameraProps {
   barCodeTypes?: Array<keyof BarCodeType>;
   googleVisionBarcodeType?: Constants['GoogleVisionBarcodeDetection']['BarcodeType'];
   googleVisionBarcodeMode?: Constants['GoogleVisionBarcodeDetection']['BarcodeMode'];
+  googleVisionEnableAllPotentialBarcodes?: boolean;
   onBarCodeRead?(event: BarCodeReadEvent): void;
   onGoogleVisionBarcodesDetected?(event: GoogleVisionBarcodesDetectedEvent): void;
 

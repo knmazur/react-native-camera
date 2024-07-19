@@ -5,7 +5,6 @@ import {
   findNodeHandle,
   Platform,
   NativeModules,
-  ViewPropTypes,
   requireNativeComponent,
   View,
   ActivityIndicator,
@@ -13,7 +12,7 @@ import {
   StyleSheet,
   PermissionsAndroid,
 } from 'react-native';
-
+import { ViewPropTypes } from "deprecated-react-native-prop-types";
 import type { FaceFeature } from './FaceDetector';
 
 const Rationale = PropTypes.shape({
@@ -272,6 +271,7 @@ type PropsType = typeof View.props & {
   barCodeTypes?: Array<string>,
   googleVisionBarcodeType?: number,
   googleVisionBarcodeMode?: number,
+  googleVisionEnableAllPotentialBarcodes?: boolean,
   whiteBalance?: number | string | {temperature: number, tint: number, redGainOffset?: number, greenGainOffset?: number, blueGainOffset?: number },
   faceDetectionLandmarks?: number,
   autoFocus?: string | boolean | number,
