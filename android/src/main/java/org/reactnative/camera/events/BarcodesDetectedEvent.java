@@ -71,7 +71,7 @@ public class BarcodesDetectedEvent extends Event<BarcodesDetectedEvent> {
   private WritableMap serializeEventData() {
     WritableMap event = Arguments.createMap();
     event.putString("type", "barcode");
-    event.putArray("barcodes", mBarcodes);
+    event.putArray("barcodes", Arguments.makeNativeArray(mBarcodes.toArrayList().toArray()));
     event.putInt("target", getViewTag());
     if (mCompressedImage != null) {
       event.putString("image", Base64.encodeToString(mCompressedImage, Base64.NO_WRAP));
