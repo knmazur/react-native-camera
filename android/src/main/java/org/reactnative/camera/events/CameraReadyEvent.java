@@ -1,44 +1,42 @@
 package org.reactnative.camera.events;
 
+import androidx.annotation.Nullable;
 import androidx.core.util.Pools;
-
-import org.reactnative.camera.CameraViewManager;
-import org.reactnative.camera.Events;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
+
+import org.reactnative.camera.Events;
 
 public class CameraReadyEvent extends Event<CameraReadyEvent> {
-  private static final Pools.SynchronizedPool<CameraReadyEvent> EVENTS_POOL = new Pools.SynchronizedPool<>(3);
-  private CameraReadyEvent() {}
+    private static final Pools.SynchronizedPool<CameraReadyEvent> EVENTS_POOL = new Pools.SynchronizedPool<>(3);
 
-  public static CameraReadyEvent obtain(int viewTag) {
-    CameraReadyEvent event = EVENTS_POOL.acquire();
-    if (event == null) {
-      event = new CameraReadyEvent();
+    private CameraReadyEvent(int surfaceId, int viewTag) {
+        super(surfaceId, viewTag);
     }
-    event.init(viewTag);
-    return event;
-  }
 
-  @Override
-  public short getCoalescingKey() {
-    return 0;
-  }
+    public static CameraReadyEvent obtain(int surfaceId, int viewTag) {
+        CameraReadyEvent event = EVENTS_POOL.acquire();
+        if (event == null) {
+            event = new CameraReadyEvent(surfaceId, viewTag);
+        }
+        return event;
+    }
 
-  @Override
-  public String getEventName() {
-    return Events.EVENT_CAMERA_READY.toString();
-  }
+    @Override
+    public short getCoalescingKey() {
+        return 0;
+    }
 
-  @Override
-  public void dispatch(RCTEventEmitter rctEventEmitter) {
-    rctEventEmitter.receiveEvent(getViewTag(), getEventName(), serializeEventData());
-  }
+    @Override
+    public String getEventName() {
+        return Events.EVENT_CAMERA_READY.toString();
+    }
 
-  private WritableMap serializeEventData() {
-    return Arguments.createMap();
-  }
+    @Nullable
+    @Override
+    protected WritableMap getEventData() {
+        return Arguments.createMap();
+    }
 }

@@ -180,80 +180,92 @@ public class RNCameraViewHelper {
   public static void emitEvent(final ViewGroup view, Event event) {
     final ReactContext reactContext = (ReactContext) view.getContext();
     EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.getId());
-   
+
     if(eventDispatcher != null) {
       eventDispatcher.dispatchEvent(event);
     }
-   
   }
 
   // Mount error event
 
   public static void emitMountErrorEvent(final ViewGroup view, final String error) {
-    emitEvent(view, CameraMountErrorEvent.obtain(view.getId(), error));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, CameraMountErrorEvent.obtain(surfaceId, view.getId(), error));
   }
 
   // Camera ready event
   public static void emitCameraReadyEvent(final ViewGroup view) {
-    emitEvent(view, CameraReadyEvent.obtain(view.getId()));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, CameraReadyEvent.obtain(surfaceId, view.getId()));
   }
 
   // Picture saved event
 
   public static void emitPictureSavedEvent(final ViewGroup view, final WritableMap response) {
-    emitEvent(view, PictureSavedEvent.obtain(view.getId(), response));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, PictureSavedEvent.obtain(surfaceId, view.getId(), response));
   }
 
   // Picture taken event
 
   public static void emitPictureTakenEvent(final ViewGroup view) {
-    emitEvent(view, PictureTakenEvent.obtain(view.getId()));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, PictureTakenEvent.obtain(surfaceId, view.getId()));
   }
 
   // video recording start/end events
 
   public static void emitRecordingStartEvent(final ViewGroup view, final WritableMap response) {
-    emitEvent(view, RecordingStartEvent.obtain(view.getId(), response));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, RecordingStartEvent.obtain(surfaceId, view.getId(), response));
   }
 
   public static void emitRecordingEndEvent(final ViewGroup view) {
-    emitEvent(view, RecordingEndEvent.obtain(view.getId()));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, RecordingEndEvent.obtain(surfaceId, view.getId()));
   }
 
   // Touch event
   public static void emitTouchEvent(final ViewGroup view, final boolean isDoubleTap, final int x, final int y) {
-    emitEvent(view, TouchEvent.obtain(view.getId(), isDoubleTap, x, y));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, TouchEvent.obtain(surfaceId, view.getId(), isDoubleTap, x, y));
   }
   // Face detection events
 
   public static void emitFacesDetectedEvent(final ViewGroup view, final WritableArray data) {
-    emitEvent(view, FacesDetectedEvent.obtain(view.getId(), data));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, FacesDetectedEvent.obtain(surfaceId, view.getId(), data));
   }
 
   public static void emitFaceDetectionErrorEvent(final ViewGroup view, final RNFaceDetector faceDetector) {
-    emitEvent(view, FaceDetectionErrorEvent.obtain(view.getId(), faceDetector));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, FaceDetectionErrorEvent.obtain(surfaceId, view.getId(), faceDetector));
   }
 
   // Barcode detection events
 
   public static void emitBarcodesDetectedEvent(final ViewGroup view, final WritableArray barcodes, final byte[] compressedImage) {
-    emitEvent(view, BarcodesDetectedEvent.obtain(view.getId(), barcodes, compressedImage));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, BarcodesDetectedEvent.obtain(surfaceId, view.getId(), barcodes, compressedImage));
   }
 
   public static void emitBarcodeDetectionErrorEvent(final ViewGroup view, final RNBarcodeDetector barcodeDetector) {
-    emitEvent(view, BarcodeDetectionErrorEvent.obtain(view.getId(), barcodeDetector));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, BarcodeDetectionErrorEvent.obtain(surfaceId, view.getId(), barcodeDetector));
   }
 
   // Bar code read event
 
   public static void emitBarCodeReadEvent(final ViewGroup view, final Result barCode, final int width, final int height, final byte[] compressedImage) {
-    emitEvent(view, BarCodeReadEvent.obtain(view.getId(), barCode, width, height, compressedImage));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, BarCodeReadEvent.obtain(surfaceId, view.getId(), barCode, width, height, compressedImage));
   }
 
   // Text recognition event
 
   public static void emitTextRecognizedEvent(final ViewGroup view, final WritableArray data) {
-    emitEvent(view, TextRecognizedEvent.obtain(view.getId(), data));
+    int surfaceId = UIManagerHelper.getSurfaceId(view);
+    emitEvent(view, TextRecognizedEvent.obtain(surfaceId, view.getId(), data));
   }
 
   // Utilities

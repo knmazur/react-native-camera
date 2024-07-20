@@ -1,5 +1,6 @@
 package org.reactnative.camera.events;
 
+import androidx.annotation.Nullable;
 import androidx.core.util.Pools;
 
 import org.reactnative.camera.CameraViewManager;
@@ -17,20 +18,17 @@ public class FacesDetectedEvent extends Event<FacesDetectedEvent> {
 
   private WritableArray mData;
 
-  private FacesDetectedEvent() {}
-
-  public static FacesDetectedEvent obtain(int viewTag, WritableArray data) {
-    FacesDetectedEvent event = EVENTS_POOL.acquire();
-    if (event == null) {
-      event = new FacesDetectedEvent();
-    }
-    event.init(viewTag, data);
-    return event;
+  private FacesDetectedEvent(int surfaceId, int viewTag, WritableArray data) {
+    super(surfaceId, viewTag);
+    mData = data;
   }
 
-  private void init(int viewTag, WritableArray data) {
-    super.init(viewTag);
-    mData = data;
+  public static FacesDetectedEvent obtain(int surfaceId, int viewTag, WritableArray data) {
+    FacesDetectedEvent event = EVENTS_POOL.acquire();
+    if (event == null) {
+      event = new FacesDetectedEvent(surfaceId, viewTag, data);
+    }
+    return event;
   }
 
   /**
@@ -52,12 +50,9 @@ public class FacesDetectedEvent extends Event<FacesDetectedEvent> {
     return Events.EVENT_ON_FACES_DETECTED.toString();
   }
 
+  @Nullable
   @Override
-  public void dispatch(RCTEventEmitter rctEventEmitter) {
-    rctEventEmitter.receiveEvent(getViewTag(), getEventName(), serializeEventData());
-  }
-
-  private WritableMap serializeEventData() {
+  protected WritableMap getEventData() {
     WritableMap event = Arguments.createMap();
     event.putString("type", "face");
     event.putArray("faces", mData);

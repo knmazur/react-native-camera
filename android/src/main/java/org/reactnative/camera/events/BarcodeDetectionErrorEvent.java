@@ -1,35 +1,31 @@
 package org.reactnative.camera.events;
 
+import androidx.annotation.Nullable;
 import androidx.core.util.Pools;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
-import org.reactnative.camera.CameraViewManager;
 import org.reactnative.barcodedetector.RNBarcodeDetector;
 import org.reactnative.camera.Events;
 
 public class BarcodeDetectionErrorEvent extends Event<BarcodeDetectionErrorEvent> {
 
   private static final Pools.SynchronizedPool<BarcodeDetectionErrorEvent> EVENTS_POOL = new Pools.SynchronizedPool<>(3);
-  private RNBarcodeDetector mBarcodeDetector;
+  private final  RNBarcodeDetector mBarcodeDetector;
 
-  private BarcodeDetectionErrorEvent() {
+  private BarcodeDetectionErrorEvent(int surfaceId, int viewTag, RNBarcodeDetector barcodeDetector) {
+    super(surfaceId, viewTag);
+    mBarcodeDetector = barcodeDetector;
   }
 
-  public static BarcodeDetectionErrorEvent obtain(int viewTag, RNBarcodeDetector barcodeDetector) {
+  public static BarcodeDetectionErrorEvent obtain(int surfaceId, int viewTag, RNBarcodeDetector barcodeDetector) {
     BarcodeDetectionErrorEvent event = EVENTS_POOL.acquire();
     if (event == null) {
-      event = new BarcodeDetectionErrorEvent();
+      event = new BarcodeDetectionErrorEvent(surfaceId, viewTag, barcodeDetector);
     }
-    event.init(viewTag, barcodeDetector);
     return event;
   }
 
-  private void init(int viewTag, RNBarcodeDetector faceDetector) {
-    super.init(viewTag);
-    mBarcodeDetector = faceDetector;
-  }
 
   @Override
   public short getCoalescingKey() {
@@ -41,12 +37,9 @@ public class BarcodeDetectionErrorEvent extends Event<BarcodeDetectionErrorEvent
     return Events.EVENT_ON_BARCODE_DETECTION_ERROR.toString();
   }
 
+  @Nullable
   @Override
-  public void dispatch(RCTEventEmitter rctEventEmitter) {
-    rctEventEmitter.receiveEvent(getViewTag(), getEventName(), serializeEventData());
-  }
-
-  private WritableMap serializeEventData() {
+  protected WritableMap getEventData() {
     WritableMap map = Arguments.createMap();
     map.putBoolean("isOperational", mBarcodeDetector != null && mBarcodeDetector.isOperational());
     return map;

@@ -1,70 +1,61 @@
 package org.reactnative.camera.events;
 
+import androidx.annotation.Nullable;
 import androidx.core.util.Pools;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-
-import org.reactnative.camera.CameraViewManager;
 import org.reactnative.camera.Events;
 
 
 public class TouchEvent extends Event<TouchEvent> {
-  private static final Pools.SynchronizedPool<TouchEvent> EVENTS_POOL =
-      new Pools.SynchronizedPool<>(3);
+    private static final Pools.SynchronizedPool<TouchEvent> EVENTS_POOL =
+            new Pools.SynchronizedPool<>(3);
 
-  private int mX;
-  private int mY;
-  private boolean mIsDoubleTap;
+    private int mX;
+    private int mY;
+    private boolean mIsDoubleTap;
 
-  private TouchEvent() {}
-
-  public static TouchEvent obtain(int viewTag, boolean isDoubleTap, int x, int y) {
-    TouchEvent event = EVENTS_POOL.acquire();
-    if (event == null) {
-      event = new TouchEvent();
+    private TouchEvent(int surfaceId, int viewTag, boolean isDoubleTap, int x, int y) {
+        super(surfaceId, viewTag);
+        mX = x;
+        mY = y;
+        mIsDoubleTap = isDoubleTap;
     }
-    event.init(viewTag, isDoubleTap, x, y);
-    return event;
-  }
 
-  private void init(int viewTag, boolean isDoubleTap, int x, int y) {
-    super.init(viewTag);
-    mX = x;
-    mY = y;
-    mIsDoubleTap=isDoubleTap;
-  }
+    public static TouchEvent obtain(int surfaceId, int viewTag, boolean isDoubleTap, int x, int y) {
+        TouchEvent event = EVENTS_POOL.acquire();
+        if (event == null) {
+            event = new TouchEvent(surfaceId, viewTag, isDoubleTap, x, y);
+        }
+        return event;
+    }
 
+    @Override
+    public short getCoalescingKey() {
+        return 0;
+    }
 
-  @Override
-  public short getCoalescingKey() {
-    return 0;
-  }
+    @Override
+    public String getEventName() {
+        return Events.EVENT_ON_TOUCH.toString();
+    }
 
-  @Override
-  public String getEventName() {
-    return Events.EVENT_ON_TOUCH.toString();
-  }
+    @Nullable
+    @Override
+    protected WritableMap getEventData() {
+        WritableMap event = Arguments.createMap();
 
-  @Override
-  public void dispatch(RCTEventEmitter rctEventEmitter) {
-    rctEventEmitter.receiveEvent(getViewTag(), getEventName(), serializeEventData());
-  }
+        event.putInt("target", getViewTag());
 
-  private WritableMap serializeEventData() {
-    WritableMap event = Arguments.createMap();
+        WritableMap touchOrigin = Arguments.createMap();
+        touchOrigin.putInt("x", mX);
+        touchOrigin.putInt("y", mY);
 
-    event.putInt("target", getViewTag());
-
-    WritableMap touchOrigin = Arguments.createMap();
-    touchOrigin.putInt("x", mX);
-    touchOrigin.putInt("y",mY);
-
-    event.putBoolean("isDoubleTap", mIsDoubleTap);
-    event.putMap("touchOrigin", touchOrigin);
-    return event;
-  }
+        event.putBoolean("isDoubleTap", mIsDoubleTap);
+        event.putMap("touchOrigin", touchOrigin);
+        return event;
+    }
 }
