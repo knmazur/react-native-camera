@@ -111,7 +111,9 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
     addCallback(new Callback() {
       @Override
       public void onCameraOpened(CameraView cameraView) {
-        RNCameraViewHelper.emitCameraReadyEvent(cameraView);
+        new Thread(() -> {
+            RNCameraViewHelper.emitCameraReadyEvent(cameraView);
+        }).start();
       }
 
       @Override
