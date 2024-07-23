@@ -317,7 +317,7 @@ const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
 const RNCameraModule = isTurboModuleEnabled ? require("./NativeRNCamera").default : NativeModules.RNCameraModule
 
-const turboConstants = isTurboModuleEnabled ? RNCameraModule.getTurboConstants() : {};
+const turboConstants = isTurboModuleEnabled ? RNCameraModule.getConstants() : {};
 
 const CameraManager: Object =  {...RNCameraModule, ...turboConstants} || {
     stubbed: true,

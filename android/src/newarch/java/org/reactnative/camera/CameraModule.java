@@ -21,6 +21,11 @@ public class CameraModule extends NativeRNCameraSpec {
         mScopedContext = new ScopedContext(reactContext);
     }
 
+    @Override
+    protected Map<String, Object> getTypedExportedConstants() {
+        return CameraModuleImpl.getConstants();
+    }
+
     public ScopedContext getScopedContext() {
         return mScopedContext;
     }
@@ -28,11 +33,6 @@ public class CameraModule extends NativeRNCameraSpec {
     @Override
     public String getName() {
         return CameraModuleImpl.NAME;
-    }
-
-    @Override
-    public WritableMap getTurboConstants() {
-        return new TurboConstants().getConstants();
     }
 
     @Override
