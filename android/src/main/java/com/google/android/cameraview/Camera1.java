@@ -1067,11 +1067,13 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
             // to be consistent with Camera2, and to prevent crashes on some devices
             // do not allow preview sizes that are not also in the picture sizes set
-            for (AspectRatio aspectRatio : mPreviewSizes.ratios()) {
-                if (mPictureSizes.sizes(aspectRatio) == null) {
-                    mPreviewSizes.remove(aspectRatio);
+            try {
+                for (AspectRatio aspectRatio : mPreviewSizes.ratios()) {
+                    if (mPictureSizes.sizes(aspectRatio) == null) {
+                        mPreviewSizes.remove(aspectRatio);
+                    }
                 }
-            }
+             } catch(Exception e) {}
 
             // AspectRatio
             if (mAspectRatio == null) {
