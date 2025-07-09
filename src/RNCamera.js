@@ -15,6 +15,8 @@ import {
 import { ViewPropTypes } from "deprecated-react-native-prop-types";
 import type { FaceFeature } from './FaceDetector';
 
+const isFabricEnabled = !!global.nativeFabricUIManager;
+
 const Rationale = PropTypes.shape({
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
@@ -66,8 +68,8 @@ const requestPermissions = async (
         // eslint-disable-next-line no-console
         console.warn(
           `The 'captureAudio' property set on RNCamera instance but 'RECORD_AUDIO' permissions not defined in the applications 'AndroidManifest.xml'. ` +
-            `If you want to record audio you will have to add '<uses-permission android:name="android.permission.RECORD_AUDIO"/>' to your 'AndroidManifest.xml'. ` +
-            `Otherwise you should set the 'captureAudio' property on the component instance to 'false'.`,
+          `If you want to record audio you will have to add '<uses-permission android:name="android.permission.RECORD_AUDIO"/>' to your 'AndroidManifest.xml'. ` +
+          `Otherwise you should set the 'captureAudio' property on the component instance to 'false'.`,
         );
       }
     } else if (Platform.OS === 'windows') {
@@ -264,29 +266,29 @@ type PropsType = typeof View.props & {
   onDoubleTap?: Function,
   onGoogleVisionBarcodesDetected?: ({ barcodes: Array<TrackedBarcodeFeature> }) => void,
   onSubjectAreaChanged?: ({ nativeEvent: { prevPoint: {| x: number, y: number |} } }) => void,
-  faceDetectionMode?: number,
-  trackingEnabled?: boolean,
-  flashMode?: number | string,
-  exposure?: number,
-  barCodeTypes?: Array<string>,
-  googleVisionBarcodeType?: number,
-  googleVisionBarcodeMode?: number,
-  googleVisionEnableAllPotentialBarcodes?: boolean,
-  whiteBalance?: number | string | {temperature: number, tint: number, redGainOffset?: number, greenGainOffset?: number, blueGainOffset?: number },
-  faceDetectionLandmarks?: number,
-  autoFocus?: string | boolean | number,
-  autoFocusPointOfInterest?: { x: number, y: number },
-  faceDetectionClassifications?: number,
-  onFacesDetected?: ({ faces: Array<TrackedFaceFeature> }) => void,
-  onTextRecognized?: ({ textBlocks: Array<TrackedTextFeature> }) => void,
-  captureAudio?: boolean,
-  keepAudioSession?: boolean,
-  useCamera2Api?: boolean,
-  playSoundOnCapture?: boolean,
-  playSoundOnRecord?: boolean,
-  videoStabilizationMode?: number | string,
-  pictureSize?: string,
-  rectOfInterest: Rect,
+    faceDetectionMode ?: number,
+    trackingEnabled ?: boolean,
+    flashMode ?: number | string,
+    exposure ?: number,
+    barCodeTypes ?: Array < string >,
+    googleVisionBarcodeType ?: number,
+    googleVisionBarcodeMode ?: number,
+    googleVisionEnableAllPotentialBarcodes ?: boolean,
+    whiteBalance ?: number | string | { temperature: number, tint: number, redGainOffset?: number, greenGainOffset?: number, blueGainOffset?: number },
+    faceDetectionLandmarks ?: number,
+    autoFocus ?: string | boolean | number,
+    autoFocusPointOfInterest ?: { x: number, y: number },
+    faceDetectionClassifications ?: number,
+    onFacesDetected ?: ({ faces: Array < TrackedFaceFeature > }) => void,
+      onTextRecognized ?: ({ textBlocks: Array < TrackedTextFeature > }) => void,
+        captureAudio ?: boolean,
+        keepAudioSession ?: boolean,
+        useCamera2Api ?: boolean,
+        playSoundOnCapture ?: boolean,
+        playSoundOnRecord ?: boolean,
+        videoStabilizationMode ?: number | string,
+        pictureSize ?: string,
+        rectOfInterest: Rect,
 };
 
 type StateType = {
@@ -313,40 +315,38 @@ const RecordAudioPermissionStatusEnum: {
   NOT_AUTHORIZED: 'NOT_AUTHORIZED',
 };
 
-const isTurboModuleEnabled = global.__turboModuleProxy != null;
+const RNCameraModule = isFabricEnabled ? require("./NativeRNCamera").default : NativeModules.RNCameraModule
 
-const RNCameraModule = isTurboModuleEnabled ? require("./NativeRNCamera").default : NativeModules.RNCameraModule
+const turboConstants = isFabricEnabled ? RNCameraModule.getConstants() : {};
 
-const turboConstants = isTurboModuleEnabled ? RNCameraModule.getConstants() : {};
-
-const CameraManager: Object =  {...RNCameraModule, ...turboConstants} || {
-    stubbed: true,
-    Type: {
-      back: 1,
+const CameraManager: Object = { ...RNCameraModule, ...turboConstants } || {
+  stubbed: true,
+  Type: {
+    back: 1,
+  },
+  AutoFocus: {
+    on: 1,
+  },
+  FlashMode: {
+    off: 1,
+  },
+  WhiteBalance: {},
+  BarCodeType: {},
+  FaceDetection: {
+    fast: 1,
+    Mode: {},
+    Landmarks: {
+      none: 0,
     },
-    AutoFocus: {
-      on: 1,
+    Classifications: {
+      none: 0,
     },
-    FlashMode: {
-      off: 1,
-    },
-    WhiteBalance: {},
-    BarCodeType: {},
-    FaceDetection: {
-      fast: 1,
-      Mode: {},
-      Landmarks: {
-        none: 0,
-      },
-      Classifications: {
-        none: 0,
-      },
-    },
-    GoogleVisionBarcodeDetection: {
-      BarcodeType: 0,
-      BarcodeMode: 0,
-    },
-  };
+  },
+  GoogleVisionBarcodeDetection: {
+    BarcodeType: 0,
+    BarcodeMode: 0,
+  },
+};
 
 const EventThrottleMs = 500;
 
@@ -920,8 +920,6 @@ export const Constants = Camera.Constants;
 export function hasTorch() {
   return RNCameraModule.hasTorch();
 }
-
-const isFabricEnabled = global.nativeFabricUIManager != null
 
 const RNCamera = !isFabricEnabled ? requireNativeComponent('RNCamera', Camera, {
   nativeOnly: {
