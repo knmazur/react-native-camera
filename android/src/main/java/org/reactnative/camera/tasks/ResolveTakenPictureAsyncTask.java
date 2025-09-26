@@ -230,8 +230,8 @@ public class ResolveTakenPictureAsyncTask extends AsyncTask<Void, Void, Writable
 
                 // Cache compressed image in imageStream
                 ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
-                if (!mBitmap.compress(Bitmap.CompressFormat.JPEG, getQuality(), imageStream)) {
-                    mPromise.reject(ERROR_TAG, "Could not compress image to JPEG");
+                if (!mBitmap.compress(Bitmap.CompressFormat.WEBP, getQuality(), imageStream)) {
+                    mPromise.reject(ERROR_TAG, "Could not compress image to WEBP");
                     return null;
                 }
 
